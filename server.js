@@ -1,10 +1,12 @@
 
 let main = async () => {
 
-    let connect = require('./mappers/base');
+    const connect = require('./mappers/base');
     await connect();
 
     //Now connected
+    const $ = require('./mappers/index');
+    $.connection.create();
     
 }
 

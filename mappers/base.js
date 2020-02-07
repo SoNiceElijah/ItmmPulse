@@ -12,14 +12,14 @@ async function BaseMapper(_db) {
         for(let i = 0; i < collections.length; ++i)
             obj[collections[i].name] = _db.collection(collections[i].name);
             
-        obj.execute = async (table, query, param) => {
+        obj.execute = async (table, query, ...params) => {
             
             let cursor = this[table];
-            cursor = cursor.find(param);
 
             let commands = query.split(' ');
             for(let i = 0; i < commands.lenght; ++i)
-                cursor = cursor[commands[i]]();
+                if(params[i] || params[i] == 0)
+                    cursor = cursor[commands[i]](params[i]);
 
             return await cursor.toArray();
         };
