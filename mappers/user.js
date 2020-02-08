@@ -19,7 +19,9 @@ module.exports = {
             username : data.username,
             salt : salt,
             hash : hash,
-            register_date : time.toUTC(new Date())
+            register_date : time.toUTC(new Date()),
+
+            chat_ids : []
         }
 
         base.user.insertOne(user);

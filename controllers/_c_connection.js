@@ -1,16 +1,16 @@
 const $ = require('../mappers/index');
+const $v = require('../ulils/dataChecker');
 
 module.exports = {
     open : async (ctx) => {
 
-        if(!(ctx.username && typeof ctx.username == 'string'))
-            return 1;
-        if(!(ctx.password && typeof ctx.password == 'string'))
-            return 2;
+        let clear = $v({username : 'string', password : 'string'}, ctx);
+        if(!clear)
+            return false;
         
-        let uid = await $.user.checkPassword(ctx.username, ctx.password);
+        let uid = await $.user.checkPassword(clear.username, clear.password);
         if(!uid)
-            return 4;
+            return false;
         
         return await $.connection.create(uid,ctx.ip,ctx.device);
     },
@@ -18,19 +18,20 @@ module.exports = {
     close : async (ctx) => {
 
         if(!(ctx.token && typeof ctx.token == 'string'))
-            return 1;
+            return false;
 
         $.connection.drop(ctx.token);
+        return true;
     },
     check : async (ctx) => {
         if(!(ctx.token && typeof ctx.token == 'string'))
-            return 1;
+            return false;
 
         let c = await $.connection.find(ctx.token);
 
         if(!c)
-            return 2;
+            return false;
         
-        return 0;
+        return true;
     }
 }

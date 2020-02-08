@@ -44,6 +44,8 @@ module.exports = async () => {
         await _db.collection('message').insertOne({dummy : true});
     if(!mapper.chat)
         await _db.collection('chat').insertOne({dummy : true});
+    if(!mapper.team)
+        await _db.collection('team').insertOne({dummy : true});
 
     mapper = await BaseMapper(_db);
     module.exports = mapper;
