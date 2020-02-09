@@ -10,12 +10,17 @@ module.exports = {
     create : async (data) => {
 
         let chat = {
+            _id : new oid(),
+
             name : data.name,
             members : data.members,
-            create_date : time.toUTC(new Date())
+            create_date : time.toUTC(new Date()),
+
+            direct : data.direct
         };
 
         base.chat.insertOne(chat);
+        return chat._id + '';
     },
     find : async (cid) => {
         return await base.chat.findOne({_id : oid(cid)});

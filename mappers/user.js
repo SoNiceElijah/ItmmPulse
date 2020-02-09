@@ -15,6 +15,8 @@ module.exports = {
         .digest('hex');
 
         let user = {
+            _id : new oid(),
+
             name : data.name,
             username : data.username,
             salt : salt,
@@ -25,6 +27,7 @@ module.exports = {
         }
 
         base.user.insertOne(user);
+        return user._id + '';
     },
     find : async (uid) => {
         return await base.user.findOne({_id : oid(uid)});
