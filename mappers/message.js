@@ -33,4 +33,7 @@ module.exports = {
     findbyUser : async (uid, skip, limit) => {
         return await base.execute('user','find skip limit', {uid : uid}, skip, limit);
     },
+    findGT : async (mid, cids) => {
+        return await base.message.find({_id : {$gt : oid(mid)}, cid : {$in : cids}}).toArray();
+    }
 }

@@ -36,5 +36,8 @@ module.exports = {
     },
     delete : async (cid) => {
         base.chat.deleteOne({_id : oid(cid)});
+    },
+    findDirect : async (members) => {
+        return await base.findOne({members : {$all : members}, direct : true});
     }
 }

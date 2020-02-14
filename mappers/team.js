@@ -13,7 +13,7 @@ module.exports = {
             members : data.members,
             create_date : time.toUTC(new Date()),
 
-            chat_ids = []
+            chat_ids = data.cids
         }
 
         base.team.insertOne(team);
@@ -23,10 +23,10 @@ module.exports = {
         return await base.team.findOne({_id : oid(tid)});
     },
     allByMember : async (member) => {
-        return await base.team.find({members : { $in : [member]}});
+        return await base.team.find({members : { $all : [member]}});
     },
     findByMember : async(member, skip, limit) => {
-        return await base.execute('team','find skip limit', {members : { $in : [member]}}, skip, limit);
+        return await base.execute('team','find skip limit', {members : { $all : [member]}}, skip, limit);
     },
     updateName : async (tid, name) => {
         base.team.updateOne({_id : oid(tid)},{name : name});

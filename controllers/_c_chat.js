@@ -6,13 +6,11 @@ module.exports = {
     new : async (ctx) => {
 
         let clear = $v($m.chat,ctx);
-        clear = {
-            ...clear,
-            direct : false
-        }
 
         if(!clear)
             return false;
+
+        clear.direct = false;
 
         let cid = $.chat.create(clear);
         clear = $v({tid : 'string'},ctx);
@@ -26,6 +24,9 @@ module.exports = {
         let team = await $.team.find(tid);
 
         if(!team)
+            return false;
+
+        if(!team.members.includes(ctx.uid))
             return false;
 
         let cids = team.chat_ids;

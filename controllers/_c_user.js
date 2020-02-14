@@ -1,10 +1,11 @@
 const $ = require('../mappers/index');
 const $v = require('../ulils/dataChecker');
+const $m = require('../models/index');
 
 module.exports = {
     register : async (ctx) => {
 
-        let clear = $v(ctx);
+        let clear = $v($m.user,ctx);
         if(!clear)
             return false;
 

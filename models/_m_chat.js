@@ -1,4 +1,6 @@
 module.exports = {
     name : 'string',
-    members : 'array'
+    members : 'array',
+
+    direct : 'bool'
 }
