@@ -13,7 +13,7 @@ module.exports = {
         let hash = crypto.createHmac('sha256',salt)
         .update(data.password)
         .digest('hex');
-
+        
         let user = {
             _id : new oid(),
 
@@ -23,11 +23,12 @@ module.exports = {
             hash : hash,
             register_date : time.toUTC(new Date()),
 
-            chat_ids : []
+            chat_ids : [],
+            team_ids : []
         }
 
         base.user.insertOne(user);
-        return user._id + '';
+        return user._id + "";
     },
     find : async (uid) => {
         return await base.user.findOne({_id : oid(uid)});
@@ -39,10 +40,16 @@ module.exports = {
         base.user.deleteOne({_id : oid(uid)});
     },
     updateChats : async (uid,cids) => {
-        base.user.updateOne({_id : oid(uid)},{chat_ids = cids});
+        base.user.updateOne({_id : oid(uid)},{$set : {chat_ids : cids}});
+    },
+    updateTeams : async (uid,tids) => {
+        base.user.updateOne({_id : oid(uid)},{$set : {team_ids : tids}});
     },
     checkPassword : async (username, password) => {
-        let u = await this.findByUsername(username);
+        let u = await await base.user.findOne({username : username});
+
+        if(!u)
+            return null;
 
         let h = crypto.createHmac('sha256',u.salt)
         .update(password)

@@ -9,8 +9,8 @@ module.exports = {
         if(!team)
             return false;
 
-        let cid = $.chat.create({
-            name : "Main",
+        let cid = await $.chat.create({
+            name : "main",
             members : team.members,
 
             direct : false
@@ -36,5 +36,12 @@ module.exports = {
             return false;
 
         return await $.team.findByMember(tid);
+    },
+    name : async (ctx) => {
+        let name = $v({name : 'string'},ctx).name;
+        if(!name)
+            return false;
+
+        return await $.team.findByName(name);
     }
 }

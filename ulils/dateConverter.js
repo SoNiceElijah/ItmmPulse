@@ -1,6 +1,6 @@
 function toUTC(date) 
 {
-    return (date).getUTCMilliseconds();
+    return (date.getTime() + date.getTimezoneOffset() * 60 * 1000);
 }
 
 function fromUTC(milliseconds)

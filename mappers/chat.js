@@ -20,7 +20,7 @@ module.exports = {
         };
 
         base.chat.insertOne(chat);
-        return chat._id + '';
+        return chat._id + "";
     },
     find : async (cid) => {
         return await base.chat.findOne({_id : oid(cid)});

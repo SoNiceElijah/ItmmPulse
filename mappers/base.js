@@ -50,4 +50,8 @@ module.exports = async () => {
     mapper = await BaseMapper(_db);
     module.exports = mapper;
 
+
+    return mapper;
 }
+
+
