@@ -32,6 +32,6 @@ module.exports = {
         if(!c)
             return false;
         
-        return true;
+        return c;
     }
 }

@@ -13,7 +13,8 @@ module.exports = {
             members : data.members,
             create_date : time.toUTC(new Date()),
 
-            chat_ids : data.cids
+            chat_ids : data.cids,
+            main : data.main
         }
 
         base.team.insertOne(team);
@@ -35,9 +36,9 @@ module.exports = {
         base.team.updateOne({_id : oid(tid)},{name : name});
     },
     updateMembers : async (tid, members) => {
-        base.team.updateOne({_id : oid(tid)}, {members : members});
+        base.team.updateOne({_id : oid(tid)}, { $set : {members : members}});
     },
     updateChats : async (tid, chats) => {
-        base.team.updateOne({_id : oid(tid)}, {chat_ids : chats});
+        base.team.updateOne({_id : oid(tid)}, { $set : {chat_ids : chats}});
     }
 };

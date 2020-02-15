@@ -9,8 +9,21 @@ module.exports = {
         if(!clear)
             return false;
 
-        $.user.create(clear);
-        return true;
+        if(!clear.username)
+            return false;
+        
+        if(!clear.password)
+            return false;
+        
+        if(!clear.name)
+            return false;
+
+        let check = await $.user.findByUsername(clear.username);
+        if(check)
+            return false;
+
+        let uid = await $.user.create(clear);
+        return uid + '';
 
     },
     id : async (id) => {
@@ -24,6 +37,33 @@ module.exports = {
             return null;
 
         return await $.user.findByUsername(username);
+    },
+    get : async (ctx) => {
+        let v = $v({id : 'string', username : 'string'},ctx);
+
+        if(!v)
+            return false;
+
+        let { id , username} = v;
+
+        if(id)
+        {
+            let user = await $.user.find(id);
+            if(!user)
+                return false;
+    
+            return user;
+        }
+        else if(username)
+        {
+            let user = await $.user.findByUsername(username);
+            if(!user)
+                return false;
+    
+            return user;
+        }
+        else
+            return false;
     },
     chats : async (uid) => {
 

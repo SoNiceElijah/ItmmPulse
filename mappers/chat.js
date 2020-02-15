@@ -29,7 +29,7 @@ module.exports = {
         return await base.chat.find({}).toArray();
     },
     updateMembers : async (cid, members) => {
-        base.chat.updateOne({_id : cid},{members : members});
+        base.chat.updateOne({_id : oid(cid)},{ $set : {members : members}});
     },
     updateName : async (cid, name) => {
         base.chat.updateOne({_id : oid(cid)}, {name : name});
@@ -38,6 +38,9 @@ module.exports = {
         base.chat.deleteOne({_id : oid(cid)});
     },
     findDirect : async (members) => {
-        return await base.findOne({members : {$all : members}, direct : true});
+        return await base.chat.findOne({members : {$all : members}, direct : true});
+    },
+    findDialogs : async (uid) => {
+        return await base.chat.find({members : {$in : [uid]}, direct : true}).toArray();
     }
 }

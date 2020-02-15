@@ -36,8 +36,50 @@ module.exports = {
 
         return true;
     },
-    id : async (cid) => {
-        return await $.chat.find(cid);
+    id : async (ctx) => {
+        let v = $v({ id : 'string'}, ctx);
+        if(!v)
+            return false;
+
+        let { id } = v;
+
+        let chat =  await $.chat.find(id);
+        if(!chat)
+            return false;
+
+        return chat;
+    },
+    list : async (ctx) => {
+
+        let v = $v({ tid : 'string', direct : 'bool'});
+
+        if(!v)
+            return false;
+
+        let { tid, direct } = v;
+
+        if(tid)
+        {
+            let team = await $.team.find(tid);
+            if(!team)
+                return false;
+
+            let res = [];
+            for(let i = 0; i < team.chat_ids.length; ++i)
+            {
+                res.push(await $.chat.find(team.chat_ids[i]));
+            }
+
+            return res;
+        }
+        else if(direct)
+        {
+            let chats = await $.chat.findDialogs(ctx.uid);
+            return chats;
+        }
+        else
+            return false;
+
     },
     
 };

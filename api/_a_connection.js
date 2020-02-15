@@ -5,9 +5,17 @@ var C = require('../controllers/index');
 
 router.post('/register', async (req,res) => {
     
-    let ok = C.user.register(req.body);
+    let uid = await C.user.register(req.body);
+
+    if(!uid)
+        return res.send(400);
+
+    let team = await C.team.name({name :'developers'});
+    let tid = team._id + "";
+    let ok = await C.team.add({tid : tid, uid : uid });
+
     if(!ok)
-        res.send(400);
+        res.send(500);
     else
         res.send(200);
 
@@ -26,15 +34,29 @@ router.post('/login', async (req,res) => {
 
 });
 
-router.post('/logout', async (req,res) => {
-
-});
-
 router.use(async (req,res,next) => {
-    next();
-});
 
-module.exports = router;
+    let c = await C.connection.check({...req.body, ...req.cookies });
+
+    if(!c)
+        return res.send(401);
+        
+    let { uid, token } = c;      
+    req.user = await C.user.id(uid);         
+    req.uid = req.user._id + "";      
+    req.token = token;      
+    
+    next();      
+});      
+    
+router.post('/logout', async (req,res) => {      
+        
+    C.connection.close(req);      
+    res.send(200);
+    
+});      
+    
+module.exports = router;      
 
 //DEBUG TEAM!!!!!
 C.team.name({name :'developers'}).then((t) => {
