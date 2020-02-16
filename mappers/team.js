@@ -23,6 +23,10 @@ module.exports = {
     find : async (tid) => {
         return await base.team.findOne({_id : oid(tid)});
     },
+    findMany : async (tids) => {
+        tids = tids.map(e => oid(e));
+        return await base.team.find({_id : {$in : tids}}).toArray();
+    },
     allByMember : async (member) => {
         return await base.team.find({members : { $all : [member]}});
     },

@@ -32,12 +32,12 @@ module.exports = {
         return await $.team.find(tid);
     },
     teams : async (ctx) => {
-        let tid = $v({tid : 'string'},ctx).tid;
+        let uid = $v({tid : 'string'},ctx).uid;
 
-        if(!tid)
+        if(!uid)
             return false;
 
-        return await $.team.findByMember(tid);
+        return await $.team.findByMember(uid);
     },
     name : async (ctx) => {
         let { name } = $v({name : 'string'},ctx);
@@ -45,6 +45,52 @@ module.exports = {
             return false;
 
         return await $.team.findByName(name);
+    },
+    get : async (ctx) => {
+        let v = $v({id :'string', name : 'string'}, ctx);
+        let a = $v({id : 'array'}, ctx);
+
+        if(!v && !a)
+            return false;
+
+        let { id, name } = v;
+
+        if(id)
+        {
+            let team = await $.team.find(id);
+            if(!team)
+                return false;
+
+            if(!team.members.includes(ctx.uid))
+                return false;
+
+            return team;
+        }
+        else if(name)
+        {
+            let team = await $.team.findByName(name);
+            if(!team)
+                return false;
+
+            if(!team.members.includes(ctx.uid))
+                return false;
+
+            return team;
+        }
+        else if(a.id) 
+        {
+            let teams = await $.team.findMany(a.id);
+
+            if(!teams || teams.length == 0)
+                return false;
+
+            teams = teams.filter(e => e.members.includes(ctx.uid));
+            if(teams.length == 0)
+                return false;
+
+            return teams;
+        }
+
     },
     add : async (ctx) => {
         let {tid ,uid } = $v({tid : 'string', uid : 'string'},ctx);

@@ -40,8 +40,9 @@ module.exports = {
     },
     get : async (ctx) => {
         let v = $v({id : 'string', username : 'string'},ctx);
+        let a = $v({id : 'array'}, ctx);
 
-        if(!v)
+        if(!v && !a)
             return false;
 
         let { id , username} = v;
@@ -61,6 +62,13 @@ module.exports = {
                 return false;
     
             return user;
+        }
+        else if(a.id) {
+            let users = await $.user.findMany(a.id);
+            if(!users || users.length == 0)
+                return false;
+            
+            return users;
         }
         else
             return false;

@@ -33,6 +33,10 @@ module.exports = {
     find : async (uid) => {
         return await base.user.findOne({_id : oid(uid)});
     },
+    findMany : async (uids) => {
+        uids = uids.map(e => oid(e));
+        return await base.user.find({_id : { $in : uids} }).toArray();
+    },
     findByUsername : async (username) => {
         return await base.user.findOne({username : username});
     },
