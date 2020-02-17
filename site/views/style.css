@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css?family=Odibee+Sans&display=swap');
+
 body {
     margin : 0;
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
@@ -24,14 +26,32 @@ body {
     opacity: 0.3;
 }
 
-.center {
-    margin: auto;
-    width: 600px;
+@media(min-width: 600px) {
 
-    display: flex;
-    align-items: center;
+    .center {
+        margin: auto;
+        width: 600px;
 
-    height: 100%;
+        display: flex;
+        align-items: center;
+
+        height: 100%;
+    }
+}
+
+@media(max-width : 600px) {
+    .center {
+
+        overflow: hidden;
+
+        margin: auto;
+        width: 100%;
+
+        display: flex;
+        align-items: center;
+
+        min-height: 100%;
+    }
 }
 
 .middle {
@@ -40,12 +60,13 @@ body {
 
 .box {
     margin: auto;
-    width: 400px;
+    max-width: 400px;
+    width: 100%;
 }
 
 .logo {
     color: #dfdfdf;
-    width: 251px;
+    width: 225px;
 
     margin: auto;
 
@@ -57,13 +78,15 @@ body {
     line-height: 20px;
     font-weight: 600;
 
-    margin: 0 0 -10px 6px ;
+    margin: 0 0 -3px 4px ;
 }
 
 .logo .bot {
     font-size: 100px;
     line-height: 100px;
     font-weight: 300;
+
+    font-family: 'Odibee Sans', cursive;
 }
 
 .form {
@@ -75,6 +98,7 @@ body {
 
     border: none;
     display: inline-block;
+    border-left: 3px solid #cdcdcd;
     border-bottom: 1px solid #cdcdcd;
     width: 230px;
     padding: 10px 10px 10px 10px;
@@ -92,24 +116,49 @@ body {
 }
 
 .form input:focus {
-    border-bottom: 1px solid #4e92eb;
+    border-bottom: 1px solid #277be9;
 }
 
-.button {
-    display: inline-block;
-    
-    width: 200px;
-    text-align: center;
-    padding: 8px 15px 10px 15px;
+@media(min-width : 769px) {
 
-    color: #dfdfdf;
+    .button {
+        display: inline-block;
+        
+        width: 200px;
+        text-align: center;
+        padding: 8px 15px 10px 15px;
 
-    user-select: none;
-    cursor: pointer;
+        color: #dfdfdf;
 
-    
-    transition: 0.1s;
+        user-select: none;
+        cursor: pointer;
+
+        
+        transition: 0.1s;
+    }
 }
+
+@media(max-width : 769px) {
+
+    .button {
+        display: inline-block;
+        
+        width: 200px;
+        text-align: center;
+        padding: 15px 15px 15px 15px;
+
+        color: #dfdfdf;
+
+        user-select: none;
+        cursor: pointer;
+
+        
+        transition: 0.1s;
+    }
+
+}
+
+
 
 .submit {
     color: #202024;
