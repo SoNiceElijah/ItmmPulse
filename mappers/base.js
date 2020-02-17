@@ -14,10 +14,10 @@ async function BaseMapper(_db) {
             
         obj.execute = async (table, query, ...params) => {
             
-            let cursor = this[table];
+            let cursor = obj[table];
 
             let commands = query.split(' ');
-            for(let i = 0; i < commands.lenght; ++i)
+            for(let i = 0; i < commands.length; ++i)
                 if(params[i] || params[i] == 0)
                     cursor = cursor[commands[i]](params[i]);
 

@@ -1,0 +1,137 @@
+body {
+    margin : 0;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+.main {
+    width: 100%;
+    height: 100%;
+}
+
+.back {
+    position: fixed;
+    top : 0;
+    left: 0;
+
+    width: 100%;
+    height: 100%;
+
+    z-index: -2;
+    background: #202024;
+}
+
+.back canvas {
+    opacity: 0.3;
+}
+
+.center {
+    margin: auto;
+    width: 600px;
+
+    display: flex;
+    align-items: center;
+
+    height: 100%;
+}
+
+.middle {
+    width: 100%;
+}
+
+.box {
+    margin: auto;
+    width: 400px;
+}
+
+.logo {
+    color: #dfdfdf;
+    width: 251px;
+
+    margin: auto;
+
+    user-select: none;
+}
+
+.logo .top {
+    font-size: 30px;
+    line-height: 20px;
+    font-weight: 600;
+
+    margin: 0 0 -10px 6px ;
+}
+
+.logo .bot {
+    font-size: 100px;
+    line-height: 100px;
+    font-weight: 300;
+}
+
+.form {
+    text-align: center;
+}
+
+.form input {
+    background: transparent;
+
+    border: none;
+    display: inline-block;
+    border-bottom: 1px solid #cdcdcd;
+    width: 230px;
+    padding: 10px 10px 10px 10px;
+
+    outline: none;
+
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 16px;
+
+    color: #dfdfdf;
+
+    margin-top: 5px;
+
+    transition: 0.2s;
+}
+
+.form input:focus {
+    border-bottom: 1px solid #4e92eb;
+}
+
+.button {
+    display: inline-block;
+    
+    width: 200px;
+    text-align: center;
+    padding: 8px 15px 10px 15px;
+
+    color: #dfdfdf;
+
+    user-select: none;
+    cursor: pointer;
+
+    
+    transition: 0.1s;
+}
+
+.submit {
+    color: #202024;
+    background: #dfdfdf;
+    border-radius: 3px;
+
+    margin-top: 40px;
+
+}
+
+.submit:hover {
+    background: #afafaf;
+}
+
+.small {
+    border: 1px solid #cdcdcd;
+    border-radius: 3px;
+
+    margin-top: 10px;
+}
+
+.small:hover {
+    border: 1px solid #afafaf;
+    color : #afafaf;
+}

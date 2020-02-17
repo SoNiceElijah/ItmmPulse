@@ -26,7 +26,7 @@ let interval = setInterval(() => {
         
         for(let i = 0; i < arr.length; ++i)
             if(portal[arr[i].type + "" + arr[i].uid])
-                portal[arr[i].type + "" + arr[i].uid]()
+                portal[arr[i].type + "" + arr[i].uid](arr[i]);
         
     }
 }, 50);

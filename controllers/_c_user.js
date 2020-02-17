@@ -53,6 +53,8 @@ module.exports = {
             if(!user)
                 return false;
     
+            delete user.salt;
+            delete user.hash;
             return user;
         }
         else if(username)
@@ -61,6 +63,8 @@ module.exports = {
             if(!user)
                 return false;
     
+            delete user.salt;
+            delete user.hash;
             return user;
         }
         else if(a.id) {
@@ -68,6 +72,12 @@ module.exports = {
             if(!users || users.length == 0)
                 return false;
             
+            users = users.map(e => {
+                delete e.salt;
+                delete e.hash;
+
+                return e;
+            });
             return users;
         }
         else

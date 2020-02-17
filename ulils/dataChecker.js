@@ -8,7 +8,8 @@ module.exports = (template, data) => {
             continue;
         }
 
-        if((typeof data[field] == template[field] || (template[field] == 'array' && Array.isArray(data[field]))) )
+        let type = typeof data[field];
+        if((type== template[field] || (template[field] == 'array' && Array.isArray(data[field]))) )
             res[field] = data[field];
         else
             return false;

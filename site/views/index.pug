@@ -1,7 +1,25 @@
 html
     head
+        style
+            include ./style.css
+        script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js")
     body
-        h1= hello
-        p Тестовая страница моего приложения!!!
+        .back#pjs
+        .main
+            .center
+                .middle
+                    .box
+                        .logo 
+                            .top ITMM
+                            .bot 
+                                span PULSE
+                        .form
+                            input#itlogin(type="text", name="itlogin", placeholder="Login")
+                            input#itpassword(type="password", name="itpassword", placeholder="Password")
+                            .button.submit#sin sign in
+                            .button.small#cos sign up
 
-        footer SoNiceElijah
+
+        script(src="pjs.js")
+        script
+            include ./index.js

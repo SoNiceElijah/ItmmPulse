@@ -5,6 +5,10 @@ const $v = require('../ulils/dataChecker');
 var C = require('../controllers/index'); 
 
 router.post('/me', async (req,res) => {
+
+    delete req.user.salt;
+    delete req.user.hash;
+
     res.json(req.user);
 });
 

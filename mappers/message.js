@@ -29,13 +29,13 @@ module.exports = {
         return await base.message.find({cid : cid }).toArray();
     },
     findbyChat : async (cid, skip, limit) => {
-        return await base.execute('user','find sort skip limit', {cid : cid}, {_id : -1} ,skip, limit);
+        return await base.execute('message','find sort skip limit', {cid : cid}, {_id : -1} ,skip, limit);
     },
     allByUser : async (uid) => {
         return await base.message.find({uid : uid }).toArray();
     },
-    findbyUser : async (uid, skip, limit) => {
-        return await base.execute('user','find sort skip limit', {uid : uid},{_id : -1} ,skip, limit);
+    findbyUser : async (cids, skip, limit) => {
+        return await base.execute('message','find sort skip limit', {cid : { $in : cids}},{_id : -1} ,skip, limit);
     },
     findGT : async (mid, cids) => {
         return await base.message.find({_id : {$gt : oid(mid)}, cid : {$in : cids}}).toArray();

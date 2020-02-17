@@ -5,6 +5,10 @@ const $v = require('../ulils/dataChecker');
 var C = require('../controllers/index'); 
 
 router.post('/list', async (req,res) => {
+
+    if(req.body.uid)
+        delete req.body.uid;
+
     let data = await C.chat.list({ ...req.body, uid : req.uid});
     if(!data)
         return res.send(400);
