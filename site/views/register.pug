@@ -1,0 +1,38 @@
+html
+    head
+        link(rel="icon" href="favicon.png")
+        <meta name="theme-color" content="#272729" />
+        title PULSE
+        meta(name="viewport", content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=0")
+        style
+            include ./style.css
+        script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js")
+    body
+        .back#pjs
+        .main
+            .fix-header <a class="small-logo" href="/">ITMM<span>PULSE</span></a>
+            .center.big-width.f-height
+                .middle
+                    .box.big-width.text-center
+                        .info-part
+                            h1 Hello!
+                            p 
+                                | Привет!
+                                | <b>Большое</b> <i>спасибо</i>, что принимаешь участие в <b>EARLY-ALPHA</b> тесте нашего приложения.
+                                | Это один из самых ранних билдов, и он полон ошибок.
+                                | Для того, чтоб отладить работу и сделать приложение максимально удобным
+                                | нам нужна <i>твоя</i> помощь. 
+                        .form-part.form
+                            input#name(type="text", name="itname", placeholder="name")
+                            input#login(type="text", name="ituser", placeholder="login")
+                            input#pw1(type="password", name="itpass1", placeholder="password")
+                            input#pw2(type="password", name="itpass2", placeholder="password again")
+
+                            .button.submit sign up
+                            a(href="/").button.small#cos login page
+                    .fix-footer
+
+
+        script(src="pjs.js")
+        script
+            include ./index.js

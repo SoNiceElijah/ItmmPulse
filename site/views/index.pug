@@ -1,5 +1,8 @@
 html
     head
+        link(rel="icon" href="favicon.png")
+        <meta name="theme-color" content="#272729" />
+        title PULSE
         meta(name="viewport", content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=0")
         style
             include ./style.css
@@ -18,7 +21,7 @@ html
                             input#itlogin(type="text", name="itlogin", placeholder="Login")
                             input#itpassword(type="password", name="itpassword", placeholder="Password")
                             .button.submit#sin sign in
-                            .button.small#cos sign up
+                            a(href="/reg").button.small#cos sign up
 
 
         script(src="pjs.js")

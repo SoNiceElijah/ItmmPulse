@@ -98,7 +98,6 @@ body {
 
     border: none;
     display: inline-block;
-    border-left: 3px solid #cdcdcd;
     border-bottom: 1px solid #cdcdcd;
     width: 230px;
     padding: 10px 10px 10px 10px;
@@ -183,4 +182,112 @@ body {
 .small:hover {
     border: 1px solid #afafaf;
     color : #afafaf;
+}
+
+.form a {
+    text-decoration: none;
+}
+
+.form-part, .info-part {    
+    display: inline-block;
+    vertical-align: top;
+}
+
+.form-part {
+
+    padding: 0 30px 0 30px;
+    width: 100%;
+    max-width: 230px;
+
+    border-left: 1px solid #616161cd;
+}
+
+@media(min-width : 1000px) {
+
+    .big-width {
+        max-width: 1000px;
+        width: 1000px;        
+    }
+
+    .f-height {
+        height: calc(100% - 50px);
+    }
+
+   
+}
+@media(max-width : 1000px) {
+
+    .big-width {
+        width: 100%;
+        margin-top: 30px;
+    }
+
+    .form-part {
+        border-left: none;
+    }
+
+    .fix-footer {
+        width: 100%;
+        height: 80px;
+    }
+
+    .fix-header {
+        text-align: left;
+    }
+
+}
+
+.fix-header {
+    margin: auto;
+    width: 100%;
+
+    height: 50px;
+
+    line-height: 50px;
+    font-size: 24px;
+
+    color: #979797;
+
+    user-select: none;
+
+    text-align: center;
+
+    background: #272729;
+}
+
+.fix-header a span{
+    font-family: 'Odibee Sans', cursive;
+    color: #ececec;
+}
+
+.info-part p {
+    color: #cdcdcd;
+}
+
+.info-part h1 {
+    color: #dfdfdf;
+}
+
+.info-part {
+    max-width: 230px;
+    width: 100%;
+
+    text-align: left;
+    padding: 0 30px 0 30px;
+}
+
+.text-center {
+    text-align: center;
+}
+
+a:visited {
+    text-decoration: none;
+}
+
+a:link {
+    text-decoration: none;
+  }
+
+.small-logo {
+    color: #afafaf;
 }
