@@ -3,7 +3,13 @@ let events = [];
 let portal = {};
 
 module.exports.on = (name, func) => {
-    portal[name] = func;
+
+    if(!portal[name])
+    {
+        portal[name] = []
+    }
+
+    portal[name].push(func);
 }
 
 module.exports.push = (e) => {
@@ -21,12 +27,23 @@ let interval = setInterval(() => {
 
         events = events.filter((item) => item.uid != obj.uid);
 
-        if(portal['event' + arr[0].uid])
-            portal['event' + arr[0].uid](arr);
+        if(portal['event' + arr[0].uid] && portal['event' + arr[0].uid].length != 0) 
+        {
+            for(let i = 0; i < portal['event' + arr[0].uid].length; ++i)
+                portal['event' + arr[0].uid][i](arr);
+
+            delete portal['event' + arr[0].uid];
+        }
         
-        for(let i = 0; i < arr.length; ++i)
-            if(portal[arr[i].type + "" + arr[i].uid])
-                portal[arr[i].type + "" + arr[i].uid](arr[i]);
+        for(let i = 0; i < arr.length; ++i) {
+            if(portal[arr[i].type + "" + arr[i].uid] && portal[arr[i].type + "" + arr[i].uid].length != 0)
+            {
+                for(let j = 0; j < portal[arr[i].type + "" + arr[i].uid].length; ++j)    
+                    portal[arr[i].type + "" + arr[i].uid][j](arr[i]);
+
+                delete portal[arr[i].type + "" + arr[i].uid];
+            }
+        }
         
     }
 }, 50);

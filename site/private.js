@@ -119,6 +119,69 @@ router.get('/loadMsgs', async (req,res) => {
     res.render('pages/partials/messagePanel',model);
 });
 
+router.post('/loadMsgsUpdates', async (req,res) => {
+
+    let id = req.body.id;
+    let model = {}
+
+    if(id)
+    {
+        let msgs = await C.message.getOlder({
+            id : id,
+            cids : req.user.chat_ids
+        });
+
+        if(msgs === false)
+            return res.send(400);
+        
+        if(!msgs || msgs.length == 0)
+        {
+            C.event.on('message' + req.uid, async (e) =>{
+                msgs = await C.message.getOlder({
+                    id : id,
+                    cids : req.user.chat_ids
+                });
+
+                for(let i = 0; i < msgs.length; ++i)
+                {
+                    let user = await C.user.get({ id :msgs[i].uid});
+                    msgs[i].from = user.name;
+                    msgs[i].date = time.normalStringTime(msgs[i].date);
+
+                    msgs[i].me = req.uid == msgs[i].uid
+                }
+
+                msgs.reverse();
+                model.msgs = msgs;
+
+                res.render('pages/partials/messages',model);
+
+            });
+        }
+        else
+        {
+            for(let i = 0; i < msgs.length; ++i)
+            {
+                let user = await C.user.get({ id :msgs[i].uid});
+                msgs[i].from = user.name;
+                msgs[i].date = time.normalStringTime(msgs[i].date);
+
+                msgs[i].me = req.uid == msgs[i].uid
+            }
+
+            msgs.reverse();
+            model.msgs = msgs;
+
+            res.render('pages/partials/messages',model);
+        }
+    }
+    else
+    {
+        model.msgs = [];
+        res.render('pages/partials/messages',model);
+    }    
+}); 
+
 
 
 module.exports = router;

@@ -1,0 +1,7 @@
+.message-item.msg-me(id="mid"+msg._id)
+    .me-avatar-fix
+        .message-item-avatar= msg.from[0]
+    .message-item-content
+        .message-item-owner= msg.from
+        .message-item-msg= msg.msg
+        .message-item-date= msg.date

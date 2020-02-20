@@ -113,6 +113,8 @@ function isEmptyOrSpaces(str){
 }
 
 req('api/message/last',{},(e) => {
+    
+
     let mid = e[0]._id;
     listenServer(mid);
 
@@ -121,9 +123,14 @@ req('api/message/last',{},(e) => {
 function listenServer(mid)
 {
     console.log('START LONG POLL');
-    STATE.chat.updateReq = req('api/message/updates',{id : mid},(e) => {
-        console.log(e[0].name + ' ' + e[0].msg);
-        listenServer(e[e.length-1]._id);
+    STATE.chat.updateReq = req('application/loadMsgsUpdates',{id : mid},(e) => {
+        e = $(e);
+        console.log(e);
+        listenServer(e[e.length-1].id.slice(3));
+
+        $('#messagePanel2').append(e);
+        $("#messagePanel2").scrollTop($("#messagePanel2")[0].scrollHeight);
+
     },(e) => {
         
         if(e.statusText !== 'abort')

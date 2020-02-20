@@ -21,6 +21,7 @@ app.set('view engine','pug');
 app.use(bp.json());
 app.use(cp());
 app.use(express.static(__mainpath + '/public'));
+app.use(express.static(__mainpath + '/site/view/public'));
 
 app.use(r_connection);
 

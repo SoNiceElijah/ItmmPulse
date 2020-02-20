@@ -39,12 +39,16 @@ router.post('/updates', async (req,res) => {
     if(!data || data.length == 0)
     {
         C.event.on('message' + req.uid, async (event) => {
-            let data = await C.message.getOlder({ ...req.body, cids : req.user.chat_ids});
+            data = await C.message.getOlder({ ...req.body, cids : req.user.chat_ids});
+            data = data.map(d =>  ( {...d, me : d.uid == req.uid }));
             res.json(data);
         });
     }
-    else
+    else 
+    {
+        data = data.map(d => d.me = d.uid == req.uid);
         return res.json(data);
+    }
 
 });
 
