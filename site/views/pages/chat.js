@@ -1,31 +1,38 @@
 $('#messagePanel').load('application/loadMsgs', () => {
-    console.log('WOW');
 })
 
+STATE.chat.lastChat = '';
+STATE.chat.exist = false;
+STATE.chat.updateReq = null;
 
-let lastChat = ''
-let exist = false;
+console.log(usrs);
+
+onEvent('newPage',() => {
+    if(STATE.chat.updateReq)
+        STATE.chat.updateReq.abort();
+
+    onEvent('newPage', () => {})
+});
 
 $('.chat-list-item').click(function(e) {
 
     let element = $(this);
     console.log(element);
 
-    if(lastChat == element.attr('id'))
+    if(STATE.chat.lastChat == element.attr('id'))
         return;
 
-    if(lastChat != '')
+    if(STATE.chat.lastChat != '')
     {
-        $('#'+lastChat).removeAttr('selected');
+        $('#'+STATE.chat.lastChat).removeAttr('selected');
     }
-    lastChat = element.attr('id');
-    exist = true;
-    $('#'+lastChat).attr('selected','selected');
+    STATE.chat.lastChat = element.attr('id');
+    STATE.chat.exist = true;
+    $('#'+STATE.chat.lastChat).attr('selected','selected');
     
 
-    let cid = lastChat.slice(3);
+    let cid = STATE.chat.lastChat.slice(3);
     $('#messagePanel').load('application/loadMsgs?id='+cid, () => {
-        console.log('WOW');
         $("#messagePanel2").scrollTop($("#messagePanel2")[0].scrollHeight);
 
     })
@@ -33,24 +40,24 @@ $('.chat-list-item').click(function(e) {
 
 $('.member-list-item').click(function(e) {
 
-    exist = false;
+    STATE.chat.exist = false;
     let element = $(this);
     console.log(element);
 
-    if(lastChat == element.attr('id'))
+    if(STATE.chat.lastChat == element.attr('id'))
         return;
 
     if(element.attr('me'))
         return;
 
-    if(lastChat != '')
+    if(STATE.chat.lastChat != '')
     {
-        $('#'+lastChat).removeAttr('selected');
+        $('#'+STATE.chat.lastChat).removeAttr('selected');
     }
-    console.log(lastChat);
-    lastChat = element.attr('id');
-    console.log(lastChat);
-    $('#'+lastChat).attr('selected','selected');
+    console.log(STATE.chat.lastChat);
+    STATE.chat.lastChat = element.attr('id');
+    console.log(STATE.chat.lastChat);
+    $('#'+STATE.chat.lastChat).attr('selected','selected');
 
     if(!element.attr('exist'))
     {
@@ -60,9 +67,9 @@ $('.member-list-item').click(function(e) {
         return;
     }
 
-    exist = true;
+    STATE.chat.exist = true;
 
-    let cid = lastChat.slice(3);
+    let cid = STATE.chat.lastChat.slice(3);
     $('#messagePanel').load('application/loadMsgs?id='+cid, () => {
         $("#messagePanel2").scrollTop($("#messagePanel2")[0].scrollHeight);
     })
@@ -82,9 +89,9 @@ function send() {
 
     if(!isEmptyOrSpaces(msg))
     {
-        if(exist) {
+        if(STATE.chat.exist) {
 
-            let cid = lastChat.slice(3);
+            let cid = STATE.chat.lastChat.slice(3);
             req('api/message/send',{
                 msg,
                 cid
@@ -109,14 +116,19 @@ req('api/message/last',{},(e) => {
     let mid = e[0]._id;
     listenServer(mid);
 
-},(e) => {console.log("ID: "+e)});
+},(e) => {console.log("ID: "+e)}); 
 
 function listenServer(mid)
 {
-    req('api/message/updates',{id : mid},(e) => {
+    console.log('START LONG POLL');
+    STATE.chat.updateReq = req('api/message/updates',{id : mid},(e) => {
         console.log(e[0].name + ' ' + e[0].msg);
         listenServer(e[e.length-1]._id);
     },(e) => {
-        listenServer(mid);
+        
+        if(e.statusText !== 'abort')
+            listenServer(mid);
+        else
+            console.log('LONG POLL CLOSED!');
     })
 }

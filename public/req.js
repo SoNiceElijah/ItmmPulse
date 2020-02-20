@@ -1,7 +1,5 @@
 function req(path,data,callback,error) {
-    console.log(data);
-    console.log(JSON.stringify(data));
-    $.ajax({
+    return $.ajax({
         type : 'POST',
         url : path,
         contentType : 'application/json',

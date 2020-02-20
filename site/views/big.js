@@ -15,6 +15,20 @@ $('#logout').click(e => {
     callAlert();
 });
 
+let HANDLER = {};
+let STATE = {};
+
+STATE.chat = {};
+
+function onEvent(name,callback) {
+    HANDLER[name] = callback;
+}
+
+function rise(name) {
+    if(HANDLER[name])
+        HANDLER[name]();
+}
+
 $('#overlayBack').click(e => {
 
     dismissAlert();
@@ -73,21 +87,13 @@ function clickMenuButton(name) {
     if(activeButton == name)
         return;
 
-    document.cookie = `page=${name}; expires=Tue, 19 Jan 2038 03:14:07 GMT`;
-    
-    $('#lastContent').html($('#content').html());
-
-    $('#lastContent').addClass('central-panel-transition'); 
-    $('#lastContent').removeClass('central-panel-invis');     
+    document.cookie = `page=${name}; expires=Tue, 19 Jan 2038 03:14:07 GMT`;    
 
     $('#content').css('visibility','hidden');
     $('#content').addClass('central-panel-offset');
     $('#content').addClass('central-panel-invis');
 
     $('#content').load('application/' + name + 'Page', () => {
-
-        $('#lastContent').addClass('central-panel-shadow');
-        $('#lastContent').addClass('central-panel-invis');
 
         $('#content').css('visibility','visible');
         $('#content').addClass('central-panel-shadow');
@@ -99,9 +105,6 @@ function clickMenuButton(name) {
             $('#content').removeClass('central-panel-transition');
             $('#content').removeClass('central-panel-shadow');
 
-            $('#lastContent').removeClass('central-panel-transition');
-            $('#lastContent').removeClass('central-panel-shadow');
-
         },350);
     });
     
@@ -110,6 +113,7 @@ function clickMenuButton(name) {
         activeButton = 'mp';
     }
 
+    rise('newPage');
     $('#' + activeButton).removeAttr('selected');
     activeButton = name;
     $('#' + activeButton).attr('selected','selected');
@@ -126,3 +130,4 @@ function getCookie(name) {
     ));
     return matches ? decodeURIComponent(matches[1]) : undefined;
 }
+
