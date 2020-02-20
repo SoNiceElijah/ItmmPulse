@@ -39,7 +39,7 @@ router.use(async (req,res,next) => {
     let c = await C.connection.check({...req.body, ...req.cookies });
 
     if(!c)
-        return res.send(401);
+        return next();
         
     let { uid, token } = c;      
     req.user = await C.user.id(uid);         

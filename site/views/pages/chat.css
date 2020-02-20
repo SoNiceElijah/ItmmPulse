@@ -1,0 +1,319 @@
+@import url('https://fonts.googleapis.com/css?family=Ubuntu&display=swap');
+
+.chat-panel{
+    background: #222224;
+    width: 210px;
+    height: 100%;
+
+    padding: 0 20px 0 20px;
+    box-shadow: 1px 0 5px 0px rgba(0, 0, 0, 0.1);
+
+
+    user-select: none;
+    float: left;
+}
+
+.chat-list {
+    padding: 20px 0 10px 0;
+
+}
+
+.member-list {
+    padding: 10px 0 20px 0;
+}
+
+.chat-list-title, .member-list-title {
+    font-weight: 600;
+    font-size: 20px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #525252;
+
+}
+
+.chat-list-items, .member-list-items {
+    padding: 10px 0 10px 0;
+}
+
+.chat-list-item, .member-list-item {
+    padding: 5px 10px 7px 10px;
+    border-radius: 8px;
+    margin-top: 3px;
+    cursor: pointer;
+}
+
+.chat-list-item:hover, .member-list-item:hover {
+    background: #2d2d35;
+}
+
+.member-list-item strong, .chat-list-item strong {
+    font-family: 'Ubuntu', sans-serif;
+    font-weight: 300;
+    
+    display: inline-block;
+    margin-right: 5px;
+
+    vertical-align: middle;
+}
+
+.member-list-item strong {
+    color: #b1493b;
+    margin-top: -3px;
+}
+
+.member-list-item strong#me {
+    color: #3bb176;
+}
+
+.chat-list-item strong {
+    color: #3b78b1;
+}
+
+.member-list-item {
+    color: #777777;
+}
+
+.member-list-item[exist] {
+    color: inherit;
+}
+
+.right-box {
+    float: right;
+    width: calc(100% - 251px);
+    height: 100%;;
+}
+
+.send-panel {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+
+    height: 80px;
+    right: 0;
+
+    background: #222224;
+
+
+    box-shadow: 0 -1px 5px 0px rgba(0, 0, 0, 0.1);
+}
+
+.send-input {
+    margin: 20px 20px 10px 30px;
+    padding: 5px 30px 10px 30px;
+
+    display: inline-block;
+
+    border-radius: 8px;
+    background: #333338;
+
+    width: calc(100% - 120px);
+}
+
+.send-input input {
+    background: transparent;
+
+    border: none;
+    display: inline-block;
+    width: calc(100% - 200px);
+
+    outline: none;
+
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 16px;
+
+    color: #dfdfdf;
+
+    margin-top: 5px;
+
+    transition: 0.2s;
+
+    vertical-align: top;
+    display: inline-block;
+}
+
+.form input:focus {
+    outline: none;
+}
+
+.send-button-big {   
+
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    cursor: pointer;
+}
+
+.send-button {
+
+    width: 41px;
+    height: 41px;
+
+    display: inline-block;
+
+    position: absolute;
+    right: 0px;
+    padding-right: 10px;
+    top: 0px;
+    border-left: 1px solid #222224;
+
+    text-align: center;
+    line-height: 41px;
+
+    
+    cursor: pointer;
+}
+
+.send-button:hover {
+    background: #2e2e31;
+    border-radius: 0 8px 8px 0;
+    border-left: 1px solid #2e2e31;
+}
+
+.send-button:active {
+    background: #1f1f20;
+    border-radius: 0 8px 8px 0;
+    border-left: 1px solid #1f1f20;
+}
+
+.send-image {
+    display: inline-block;
+    background-image: url(buttons/send.png);
+    background-size: cover;
+
+    width: 20px;
+    height: 20px;
+
+    margin-top: 10px;
+    margin-left: 7px;
+
+}
+
+.sendbutton-inline {
+    display: inline-block;
+    vertical-align: top;
+    margin-top: 20px;
+
+
+
+    width: 40px ;
+    height: 40px;
+
+    border-radius: 20px;
+}
+
+.sendbutton-inline:hover {
+    background: #202025;
+}
+
+.emoji-button {
+    display: inline-block;
+}
+
+.message-panel {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 10px;
+
+    max-height: calc(100% - 10px);
+
+    overflow-y: scroll;
+    overflow-x: hidden;
+} 
+
+.message-item {
+    padding: 10px 20px 10px 20px;
+    overflow: hidden;
+}
+
+.message-item-avatar {
+    width: 40px;
+    height: 40px;
+
+    line-height: 40px;
+    text-align: center;
+
+    border-radius: 20px;
+    background: #255d9e;
+
+    display: inline-block;
+}
+
+.message-item-content {
+    display: inline-block;
+    max-width: 300px;
+    margin-left: 10px;
+    padding: 15px;
+    border-radius: 8px;
+
+    float: none;
+
+    background: #22252b;
+}
+
+.message-item-owner {
+    font-weight: 600;
+}
+
+.message-item-date {
+    text-align: right;
+    padding-top: 5px;
+}
+
+.message-panel-big {
+    position: absolute;
+
+    left: 0;
+    right: 0;
+    bottom: 80px;
+    top: 0;
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+}
+
+.no-messages-logo {
+    margin: auto;
+
+    width: 200px;
+    height: 200px;
+
+    background-image: url(emoji/svg/025-thinking.svg);
+
+    background-size: cover;
+}
+
+.no-messages-content {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.member-list-item[selected], .chat-list-item[selected] {
+    background: #27272e;
+}
+
+.msg-me .message-item-content, .me-avatar-fix {
+    float: right;
+
+}
+
+.msg-me {
+    position: relative;
+}
+
+.msg-me .message-item-content{
+    margin-right: 45px;
+    vertical-align: top;
+}
+
+.me-avatar-fix .message-item-avatar  {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+}

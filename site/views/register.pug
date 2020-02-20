@@ -2,7 +2,7 @@ html
     head
         link(rel="icon" href="favicon.png")
         <meta name="theme-color" content="#272729" />
-        title PULSE
+        title Sign up
         meta(name="viewport", content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=0")
         style
             include ./style.css
@@ -28,11 +28,13 @@ html
                             input#pw1(type="password", name="itpass1", placeholder="password")
                             input#pw2(type="password", name="itpass2", placeholder="password again")
 
-                            .button.submit sign up
-                            a(href="/").button.small#cos login page
+                            .reg-info#resInfo
+
+                            .button.submit#reg sign up
+                            a(href="/").button.small login page
                     .fix-footer
 
-
+        script(src="req.js")
         script(src="pjs.js")
         script
             include ./index.js

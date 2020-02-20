@@ -7,6 +7,8 @@ module.exports = {
         let clear = $v({username : 'string', password : 'string'}, ctx);
         if(!clear)
             return false;
+
+        clear.username = clear.username.toLowerCase();
         
         let uid = await $.user.checkPassword(clear.username, clear.password);
         if(!uid)

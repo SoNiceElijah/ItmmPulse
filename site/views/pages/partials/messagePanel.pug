@@ -1,0 +1,27 @@
+if empty
+    .no-selected-chat
+        |  Чтоб <b>начать</b> выбери чат из списка <i>слева</i>
+else if msgs.length == 0
+    .no-messages
+        .no-messages-logo
+        .no-messages-content   
+        | Кажется тут еще <b>нет</b> сообщений. Напиши <i>первое</i>!
+else
+    .message-panel#messagePanel2
+        .message-list
+            each msg in msgs
+                if msg.me
+                    .message-item.msg-me(id="mid"+msg._id)
+                        .me-avatar-fix
+                            .message-item-avatar= msg.from[0]
+                        .message-item-content
+                            .message-item-owner= msg.from
+                            .message-item-msg= msg.msg
+                            .message-item-date= msg.date
+                else
+                    .message-item(id="mid"+msg._id)
+                        .message-item-avatar= msg.from[0]
+                        .message-item-content
+                            .message-item-owner= msg.from
+                            .message-item-msg= msg.msg
+                            .message-item-date= msg.date

@@ -22,7 +22,7 @@ module.exports = {
         $.message.insert(msg);
         let memb = chat.members;
 
-        for(let i = 0; i < memb.lenght; ++i)
+        for(let i = 0; i < memb.length; ++i)
             events.push({
                 uid : memb[i],
                 type : 'message'

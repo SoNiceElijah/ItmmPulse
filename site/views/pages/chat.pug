@@ -1,0 +1,38 @@
+.big.standart-back.relative
+    .chat-panel
+        .chat-list
+            .chat-list-title Chats
+            .chat-list-items
+                each chat in chats
+                    .chat-list-item(id="cid"+chat._id)
+                        strong #
+                        span=chat.name
+        .member-list
+            .member-list-title Members
+            .member-list-items 
+                each member, i in members
+                    if member.me
+                        .member-list-item(title="Это же я!", me="me")
+                            strong#me @
+                            span=member.name
+                    else if member.exist
+                        .member-list-item(exist='exist',id="cid" + member.direct)
+                            strong @
+                            span=member.name
+                    else
+                        .member-list-item(id='nochat'+i)
+                            strong @
+                            span=member.name
+    .right-box.relative
+        .message-panel-big#messagePanel
+        .send-panel
+            .send-input.relative
+                input#msg(type="text", name="msgbox", placeholder="Сообщение...")
+                .emoji-button#emojiButton
+                .send-button#send
+                    .send-image
+
+    
+
+script
+    include ./chat.js

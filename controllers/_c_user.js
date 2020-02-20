@@ -18,6 +18,8 @@ module.exports = {
         if(!clear.name)
             return false;
 
+        clear.username = clear.username.toLowerCase();
+
         let check = await $.user.findByUsername(clear.username);
         if(check)
             return false;

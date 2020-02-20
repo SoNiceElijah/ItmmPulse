@@ -1,0 +1,44 @@
+html
+    head
+        link(rel="icon" href="favicon.png")
+        <meta name="theme-color" content="#272729" />
+        title PULSE
+        meta(name="viewport", content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=0")
+        style
+            include ./style.css
+            include ./page.css
+            include ./pages/chat.css
+            
+        script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js")
+    body
+        .up-overlay.ov-hidden#overlay
+            .overlay-back#overlayBack
+            .alert#alert.al-down
+                .alert-content#acontent Точно хочешь выйти?
+                .alert-buttons
+                    .button.small#acancel назад
+                    .button.submit#aok выйти
+        .back
+        .main
+            .top-panel
+            .left-panel
+                .left-panel-top
+                    .mbutton#mp(selected="selected")
+                        .main-button 
+                    .mbutton#np
+                        .news-image
+                    .mbutton#tp
+                        .table-image
+                    .mbutton#cp
+                        .chat-image
+                .left-panel-bottom
+                    .mbutton#logout
+                        .logout-image
+            .central-panel#lastContent
+            .central-panel#content
+            
+
+
+        script(src="req.js")
+        script
+            include ./big.js

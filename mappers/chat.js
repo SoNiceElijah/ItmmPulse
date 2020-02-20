@@ -25,6 +25,10 @@ module.exports = {
     find : async (cid) => {
         return await base.chat.findOne({_id : oid(cid)});
     },
+    findMany : async(cids) => {
+        cids = cids.map(cid => oid(cid));
+        return await base.chat.find({_id : {$in : cids}}).toArray();
+    },
     all : async () => {
         return await base.chat.find({}).toArray();
     },

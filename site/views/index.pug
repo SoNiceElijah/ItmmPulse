@@ -20,10 +20,12 @@ html
                         .form
                             input#itlogin(type="text", name="itlogin", placeholder="Login")
                             input#itpassword(type="password", name="itpassword", placeholder="Password")
+                            .reg-info#resInfo
                             .button.submit#sin sign in
                             a(href="/reg").button.small#cos sign up
 
 
+        script(src="req.js")
         script(src="pjs.js")
         script
             include ./index.js

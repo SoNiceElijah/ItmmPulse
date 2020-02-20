@@ -51,7 +51,7 @@ module.exports = {
     },
     list : async (ctx) => {
 
-        let v = $v({ tid : 'string', direct : 'bool'});
+        let v = $v({ tid : 'string', direct : 'boolean'},ctx);
 
         if(!v)
             return false;
@@ -80,6 +80,6 @@ module.exports = {
         else
             return false;
 
-    },
+    }
     
 };
