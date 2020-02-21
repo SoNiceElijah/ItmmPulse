@@ -1,0 +1,303 @@
+.main {
+    width: 100%;
+    height: 100%;
+
+    color: #cdcdcd;
+}
+
+.back {
+    position: fixed;
+    top : 0;
+    left: 0;
+
+    width: 100%;
+    height: 100%;
+
+    z-index: -2;
+    background: #202024;
+}
+
+.back canvas {
+    opacity: 0.3;
+}
+
+@media(min-width: 600px) {
+
+    .center {
+        margin: auto;
+        width: 600px;
+
+        display: flex;
+        align-items: center;
+
+        height: 100%;
+    }
+}
+
+@media(max-width : 600px) {
+    .center {
+
+        overflow: hidden;
+
+        margin: auto;
+        width: 100%;
+
+        display: flex;
+        align-items: center;
+
+        min-height: 100%;
+    }
+}
+
+.middle {
+    width: 100%;
+}
+
+.box {
+    margin: auto;
+    max-width: 400px;
+    width: 100%;
+}
+
+.logo {
+    color: #dfdfdf;
+    width: 225px;
+
+    margin: auto;
+
+    user-select: none;
+}
+
+.logo .top {
+    font-size: 30px;
+    line-height: 20px;
+    font-weight: 600;
+
+    margin: 0 0 -3px 4px ;
+}
+
+.logo .bot {
+    font-size: 100px;
+    line-height: 100px;
+    font-weight: 300;
+
+    font-family: 'Odibee Sans', cursive;
+}
+
+.form {
+    text-align: center;
+}
+
+.form input {
+    background: transparent;
+
+    border: none;
+    display: inline-block;
+    border-bottom: 1px solid #cdcdcd;
+    width: 230px;
+    padding: 10px 10px 10px 10px;
+
+    outline: none;
+
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 16px;
+
+    color: #dfdfdf;
+
+    margin-top: 5px;
+
+    transition: 0.2s;
+}
+
+.form input:focus {
+    border-bottom: 1px solid #277be9;
+}
+
+@media(min-width : 769px) {
+
+    .button {
+        display: inline-block;
+        
+        width: 200px;
+        text-align: center;
+        padding: 8px 15px 10px 15px;
+
+        color: #dfdfdf;
+
+        user-select: none;
+        cursor: pointer;
+
+        
+        transition: 0.1s;
+    }
+}
+
+@media(max-width : 769px) {
+
+    .button {
+        display: inline-block;
+        
+        width: 200px;
+        text-align: center;
+        padding: 15px 15px 15px 15px;
+
+        color: #dfdfdf;
+
+        user-select: none;
+        cursor: pointer;
+
+        
+        transition: 0.1s;
+    }
+
+}
+
+
+
+.submit {
+    color: #202024;
+    background: #dfdfdf;
+    border-radius: 3px;
+
+    margin-top: 40px;
+
+}
+
+.submit:hover {
+    background: #afafaf;
+}
+
+.small {
+    border: 1px solid #cdcdcd;
+    border-radius: 3px;
+
+    margin-top: 10px;
+}
+
+.small:hover {
+    border: 1px solid #afafaf;
+    color : #afafaf;
+}
+
+.form a {
+    text-decoration: none;
+}
+
+.form-part, .info-part {    
+    display: inline-block;
+    vertical-align: top;
+}
+
+.form-part {
+
+    padding: 0 30px 0 30px;
+    width: 100%;
+    max-width: 230px;
+
+    border-left: 1px solid #616161cd;
+}
+
+@media(min-width : 1000px) {
+
+    .big-width {
+        max-width: 1000px;
+        width: 1000px;
+    }
+
+    .f-height {
+        height: calc(100% - 50px);
+    }
+
+   
+}
+@media(max-width : 1000px) {
+
+    .big-width {
+        width: 100%;
+        margin-top: 30px;
+    }
+
+    .form-part {
+        border-left: none;
+    }
+
+    .fix-footer {
+        width: 100%;
+        height: 80px;
+    }
+
+    .fix-header {
+        text-align: left;
+    }
+
+}
+
+.fix-header {
+    margin: auto;
+    width: 100%;
+
+    height: 50px;
+
+    line-height: 50px;
+    font-size: 24px;
+
+    color: #979797;
+
+    user-select: none;
+
+    text-align: center;
+
+    background: #272729;
+}
+
+.fix-header a span{
+    font-family: 'Odibee Sans', cursive;
+    color: #ececec;
+}
+
+.info-part p {
+    color: #cdcdcd;
+}
+
+.info-part h1 {
+    color: #dfdfdf;
+}
+
+.info-part {
+    max-width: 230px;
+    width: 100%;
+
+    text-align: left;
+    padding: 0 30px 0 30px;
+}
+
+.text-center {
+    text-align: center;
+}
+
+a:visited {
+    text-decoration: none;
+}
+
+a:link {
+    text-decoration: none;
+  }
+
+.small-logo {
+    color: #afafaf;
+}
+
+.reg-info {
+    margin-top: 15px;
+    color: #afafaf;
+    margin-bottom: -20px;
+}
+
+.red-color {
+    color: #cc3f46;
+}
+
+.green-color {
+    color: #3fcc7a;;
+}
+
