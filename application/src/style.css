@@ -301,3 +301,7 @@ a:link {
     color: #3fcc7a;;
 }
 
+.mistake {
+    border-bottom : 1px solid #cc3f46 !important;
+}
+
