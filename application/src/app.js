@@ -30,9 +30,10 @@ class App extends React.Component {
         {
             axios.post('/api/message/test')
                 .then((data) => {
-                    if(data.data === 'MESSAGES')
+                    console.log(data);
+                    if(data.data === 'MESSAGE')
                     {
-
+                        this.goToPage();
                     }
                     else
                     {

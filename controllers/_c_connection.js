@@ -5,7 +5,7 @@ module.exports = {
     open : async (ctx) => {
 
         let clear = $v({username : 'string', password : 'string'}, ctx);
-        if(!clear)
+        if(!clear.username)
             return false;
 
         clear.username = clear.username.toLowerCase();

@@ -7,7 +7,7 @@ function getCookie(name) {
 }
 
 function isEmptyOrSpaces(str){
-    return str === null || str.match(/^ *$/) !== null;
+    return str === undefined || str === null || str.match(/^ *$/) !== null;
 }
 
 function validate(document, ids)
@@ -33,9 +33,23 @@ function val(document,id)
   return document.getElementById(id).value;
 }
 
+function time(utc) {
+  let date = new Date(utc);
+
+  let hh = date.getHours();
+  let ss = date.getSeconds();
+
+  let hhString = Math.floor(hh / 10) + '' + Math.floor(hh % 10);
+  let ssString =  Math.floor(ss / 10) + '' + Math.floor(ss % 10);
+
+  return hhString + ':' + ssString; 
+
+}
+
 module.exports = {
     getCookie,
     isEmptyOrSpaces,
     validate,
-    val
+    val,
+    time
 }
