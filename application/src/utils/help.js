@@ -34,13 +34,13 @@ function val(document,id)
 }
 
 function time(utc) {
-  let date = new Date(utc);
+  let date = new Date(utc - ((new Date()).getTimezoneOffset()) * 60 * 1000);
 
   let hh = date.getHours();
-  let ss = date.getSeconds();
+  let ss = date.getMinutes();
 
-  let hhString = Math.floor(hh / 10) + '' + Math.floor(hh % 10);
-  let ssString =  Math.floor(ss / 10) + '' + Math.floor(ss % 10);
+  let hhString = Math.floor(hh / 10) + "" + Math.floor(hh % 10);
+  let ssString =  Math.floor(ss / 10) + "" + Math.floor(ss % 10);
 
   return hhString + ':' + ssString; 
 

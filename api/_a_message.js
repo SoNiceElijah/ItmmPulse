@@ -38,16 +38,42 @@ router.post('/updates', async (req,res) => {
 
     if(!data || data.length == 0)
     {
-        C.event.on('message' + req.uid, async (event) => {
-            data = await C.message.getOlder({ ...req.body, cids : req.user.chat_ids});
-            data = data.map(d =>  ( {...d, me : d.uid == req.uid }));
-            res.json(data);
+        C.event.on('event' + req.uid, async (event) => {
+
+            let output = [];
+
+            let types = event.map(e => e.type);
+            let msgTypeIndex = types.indexOf('message');
+            if(msgTypeIndex != -1)
+            {
+                let cids = (await C.user.get({ id : req.user._id + ''})).chat_ids;
+                data = await C.message.getOlder({ ...req.body, cids : cids});
+                data = data.map(d =>  ( {...d, me : d.uid == req.uid }));
+                output.push({
+                    type : 'msg',
+                    content : data 
+                });
+            }
+
+            let writeTypeInex = types.indexOf('write');
+            if(writeTypeInex != -1)
+            {
+                output.push({
+                    type : 'write',
+                    content : event[writeTypeInex].uid
+                });
+            }
+
+            res.json(output);
         });
     }
     else 
     {
         data = data.map(d => d.me = d.uid == req.uid);
-        return res.json(data);
+        return res.json({
+            type : 'msg',
+            content : data 
+        });
     }
 
 });
@@ -59,7 +85,7 @@ router.post('/last', async (req,res) => {
 
     let data = await C.message.getUserHistory({cids : req.user.chat_ids, ...req.body});
 
-    if(!data)
+    if(data === false)
         return res.send(400);
 
     res.json(data);

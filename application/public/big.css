@@ -5,3 +5,24 @@ body {
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
 
+
+.delay {
+    transition: 0.2s !important;
+}
+
+.easy-delay {
+    transition : cubic-bezier(.21,.36,.62,1.01) 0.2s;
+}
+
+.left-offset {
+    margin-right: -40px;
+    margin-left: 40px;
+}
+
+.opacity-0 {
+    opacity: 0.0;
+}
+
+.display-none {
+    display: none !important;
+}

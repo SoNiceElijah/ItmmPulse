@@ -23,6 +23,8 @@ module.exports = {
             hash : hash,
             register_date : time.toUTC(new Date()),
 
+            color : '#'+Math.floor(Math.random()*16777215).toString(16),
+
             chat_ids : [],
             team_ids : []
         }

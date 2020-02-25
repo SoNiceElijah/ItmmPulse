@@ -1,8 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
+import MessageItem from './bricks/message';
+
 const axios = require('axios');
 const help = require('../../utils/help');
+
+
 
 class MessagePanel extends React.Component {
 
@@ -11,6 +15,10 @@ class MessagePanel extends React.Component {
 
         this.state = {}
         this.state.messages = [];
+
+        this.state.clicks = 0;
+
+        this.componentDidUpdate = this.componentDidUpdate.bind(this);
     }
 
     notSelected() {
@@ -31,10 +39,16 @@ class MessagePanel extends React.Component {
     }
 
     aLotOfMessages() {
+
         return (
-            <div className="message-panel" id="messagePanel2">
-                <div className="message-list">
-                    {this.state.messages.map(m => this.message(m))}
+            <div>
+                <div id="messageLoader" className="message-panel-loader">
+                    <div className="loader"></div>
+                </div>
+                <div className="message-panel" id="messagePanel2">
+                    <div className="message-list">
+                        {this.state.messages.map(m => this.message(m))}
+                    </div>
                 </div>
             </div>
         );
@@ -44,36 +58,33 @@ class MessagePanel extends React.Component {
 
         let user = this.props.members.find(u => u._id == data.uid);
         data.from = user.name;
+        data.color = user.color;
         
         if(data.uid !== this.props.me._id)
-            return (
-                <div key={'mid' + data._id} className="message-item" id={'mid' + data._id}>
-                    <div className="message-item-avatar">{data.from[0]}</div>
-                    <div className="message-item-content">
-                        <div className="message-item-owner">{data.from}</div>
-                        <div className="message-item-msg">{data.msg}</div>
-                        <div className="message-item-date">{help.time(data.date)}</div>
-                    </div>
-                </div>
-            );
+        {
+            return <MessageItem data={data} me={false} key={data._id} />
+        }  
         else
-            return (
-                <div key={'mid' + data._id} className="message-item msg-me"  id={'mid' + data._id}>
-                    <div className="me-avatar-fix">
-                        <div className="message-item-avatar">{data.from[0]}</div>
-                    </div>
-                    <div className="message-item-content">
-                        <div className="message-item-owner">{data.from}</div>
-                        <div className="message-item-msg">{data.msg}</div>
-                        <div className="message-item-date">{help.time(data.date)}</div>
-                    </div>
-                </div>
-            );
+        {
+            return <MessageItem data={data} me={true} key={data._id} />
+        }
+            
     }
 
     componentDidUpdate(prevProps) {
 
         if(prevProps.id != this.props.id && this.props.exists) {
+
+            let loader = document.getElementById('messageLoader');
+            loader.classList.remove('opacity-0');
+            loader.classList.remove('display-none');
+
+            setTimeout(() => {
+                loader.classList.add('delay');
+            },10)
+
+            this.state.clicks++;
+
             axios.post('/api/message/history',{
                 id : this.props.id,
                 limit : 20
@@ -83,6 +94,17 @@ class MessagePanel extends React.Component {
                     messages : e.data
                 })
 
+                this.state.clicks--;
+                if(this.state.clicks === 0) {
+                    loader.classList.add('opacity-0');
+                    setTimeout(() => {     
+                        if(this.state.clicks === 0) {
+                            loader.classList.add('display-none');      
+                            loader.classList.remove('delay');  
+                        }  
+                    },200);
+                }
+
             }).catch((e) => {
                 console.log('WTF');
                 console.log(e);
@@ -91,7 +113,9 @@ class MessagePanel extends React.Component {
         else if(prevProps.newMsg  != this.props.newMsg)
         {
             let msgs = this.state.messages;
-            msgs = msgs.concat(this.props.newMsg);
+
+            let news = this.props.newMsg.map(m => { return { ...m, anim : true}});;
+            msgs = msgs.concat(news);
 
             this.setState({
                 messages : msgs
@@ -109,8 +133,12 @@ class MessagePanel extends React.Component {
         }
     }
 
-    render() {
+    componentWillUnmount() {
+        console.log('Message panel unmount');
+    }
 
+    render() {
+        
         if(this.props.id === '')
             return this.notSelected();
         else if(!this.props.exists)

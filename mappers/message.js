@@ -9,6 +9,7 @@ module.exports = {
         let message = {
             _id : new oid(),
 
+            random : data.random,
             uid : data.uid,
             cid : data.cid,
             msg : data.msg,

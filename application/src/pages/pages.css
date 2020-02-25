@@ -50,6 +50,10 @@
     position: relative;
 }
 
+.relative {
+    position: relative;
+}
+
 .chat-list-item span, .member-list-item span {
 
     display: inline-block;
@@ -83,6 +87,10 @@
 
 .member-list-item strong#me {
     color: #3bb176;
+}
+
+div[me]:hover {
+    background: none;
 }
 
 .chat-list-item strong {
@@ -283,6 +291,8 @@
 .message-item-date {
     text-align: right;
     padding-top: 5px;
+
+    color: #757575;
 }
 
 .message-panel-big {
@@ -340,20 +350,58 @@
 }
 
 .new-message-alert {
-    right: 5;
-    top : 6;
+    right: 6px;
+    top : 6px;
 
     font-size: 14px;
     line-height: 20px;
-    border-radius: 10px;
+    border-radius: 4px;
     text-align: center;
-    min-width: 20px;
+    min-width: 10px;
     padding: 0 5px 0 5px;
 
-    color: #fff;
-    background: #b13f22;
+    color: #b12722;
+    border: 1px solid #b12722;
 
     position: absolute;
 
+}
 
+.message-panel-loader {
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #202024;
+
+    z-index: 3;
+}
+
+.chat-panel-loader {
+    background: #222224;
+    width: 250px;
+    height: 100%;
+
+    display: flex;
+
+    user-select: none;
+    float: left;
+
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    align-items: center;
+    justify-content: center;
+
+    z-index: 3;
+
+    
 }
