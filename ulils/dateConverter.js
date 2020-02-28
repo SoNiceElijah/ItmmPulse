@@ -18,8 +18,15 @@ function normalStringTime(mil)
     return (Math.floor(h / 10) + '' + h % 10) + ':' + (Math.floor(m / 10) + '' + m % 10);
 }
 
+function now()
+{
+    let date = new Date();
+    return toUTC(date);
+}
+
 module.exports = {
     toUTC,
     fromUTC,
-    normalStringTime
+    normalStringTime,
+    now
 }

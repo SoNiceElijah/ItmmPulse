@@ -1,6 +1,9 @@
-let events = [];
+let newEvents = [];
+let historyEvents = [];
 
 let portal = {};
+
+let help = require('../ulils/dateConverter');
 
 module.exports.on = (name, func) => {
 
@@ -13,37 +16,77 @@ module.exports.on = (name, func) => {
 }
 
 module.exports.push = (e) => {
-    events.push(e);
+    newEvents.push({
+        ...e,
+        ts : help.now()
+    });
 }
 
-let interval = setInterval(() => {
-    while(events.length > 0)
+module.exports.getOlder = (ts,uid) => {
+    if(uid)
     {
-        let obj = events[0];
-        let arr = events.filter((item) => item.uid == obj.uid);
+        return historyEvents.filter(e => e.ts > ts && e.uid == uid)
+    }
+    else
+    {
+        return historyEvents.filter(e => e.ts > ts);
+    }
+};
 
-        let tmp = arr.map(e => e.type); 
-        arr = arr.filter((v,i) => tmp.indexOf(v.type) === i);
+let interval = setInterval(() => {
+    while(newEvents.length > 0)
+    {
+        let obj = newEvents[0];
+        let allEvents = newEvents.filter((item) => item.uid == obj.uid);
 
-        events = events.filter((item) => item.uid != obj.uid);
+        let types = newEvents.map(e => e.type);
+        let typeEvents = [];
+        for(let i = 0; i < types.length; ++i)
+            typeEvents.push([]);
 
-        if(portal['event' + arr[0].uid] && portal['event' + arr[0].uid].length != 0) 
+        for(let i = 0; i < newEvents.length; ++i)
         {
-            for(let i = 0; i < portal['event' + arr[0].uid].length; ++i)
-                portal['event' + arr[0].uid][i](arr);
-
-            delete portal['event' + arr[0].uid];
+            let o = newEvents[i];
+            typeEvents[types.indexOf(o.type)].push(o);
         }
-        
-        for(let i = 0; i < arr.length; ++i) {
-            if(portal[arr[i].type + "" + arr[i].uid] && portal[arr[i].type + "" + arr[i].uid].length != 0)
-            {
-                for(let j = 0; j < portal[arr[i].type + "" + arr[i].uid].length; ++j)    
-                    portal[arr[i].type + "" + arr[i].uid][j](arr[i]);
 
-                delete portal[arr[i].type + "" + arr[i].uid];
+        newEvents = newEvents.filter((item) => item.uid != obj.uid);
+
+        let riseId = 'event' + allEvents[0].uid;
+        let riseFuncArray = portal[riseId];
+
+        if(riseFuncArray && riseFuncArray.length != 0) 
+        {
+            for(let i = 0; i < riseFuncArray.length; ++i)
+                riseFuncArray[i](allEvents);
+
+            delete portal['event' + allEvents[0].uid];
+        }
+
+      
+        
+        for(let i = 0; i < typeEvents.length; ++i) {
+            let riseTypeId = typeEvents[i][0].type + "" + typeEvents[i][0].uid;
+            let riseTypeFuncArray = portal[riseTypeId];
+            
+            if(riseTypeFuncArray && riseTypeFuncArray.length != 0)
+            {
+                for(let j = 0; j < riseTypeFuncArray.length; ++j)    
+                    riseTypeFuncArray[j](typeEvents[i]);
+
+                delete portal[typeEvents[i][0].type + "" + typeEvents[0][i].uid];
             }
         }
-        
+
+        allEvents = allEvents.filter(e => e.type != 'none');
+        historyEvents = historyEvents.concat(allEvents);        
     }
 }, 50);
+
+let checkTS = help.now() - 10 * 1000 * 60;
+let superInterval = setInterval(() => {
+
+    historyEvents = historyEvents.filter(e => e.ts >= checkTS);
+    checkTS = help.now();
+
+},10 * 1000 * 60)

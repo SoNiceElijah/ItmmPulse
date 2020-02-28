@@ -31,49 +31,65 @@ router.post('/history', async (req,res) => {
 
 router.post('/updates', async (req,res) => {
 
-    let data = await C.message.getOlder({ ...req.body, cids : req.user.chat_ids});
-    
-    if(data === false)
-        return res.send(400);
+    if(!req.body.ts)
+        return res.sendStatus(400);
 
-    if(!data || data.length == 0)
-    {
-        C.event.on('event' + req.uid, async (event) => {
+    let data = await C.event.getOlder(req.body.ts,req.uid);
 
+    let handler = async (events) => {
+
+        C.timer.stop(req.uid,50);
+        if(events.length == 1 && events[0].type == 'none')
+        {
+            return res.json({
+                type : 'restart'
+            });
+        }
+        else
+        {
             let output = [];
 
-            let types = event.map(e => e.type);
-            let msgTypeIndex = types.indexOf('message');
-            if(msgTypeIndex != -1)
+            let msgEvents = events.filter(e => e.type == 'message');
+            if(msgEvents.length != 0)
             {
-                let cids = (await C.user.get({ id : req.user._id + ''})).chat_ids;
-                data = await C.message.getOlder({ ...req.body, cids : cids});
+                data = msgEvents.map(e => e.content); 
                 data = data.map(d =>  ( {...d, me : d.uid == req.uid }));
                 output.push({
                     type : 'msg',
-                    content : data 
+                    content : data,
+
+                    ts : Math.max(msgEvents.map(e => e.ts))
                 });
             }
 
-            let writeTypeInex = types.indexOf('write');
-            if(writeTypeInex != -1)
+            let writeEvents = events.filter(e => e.type == 'writing')
+            if(writeEvents.length != 0)
             {
                 output.push({
                     type : 'write',
-                    content : event[writeTypeInex].uid
+                    content : writeEvents,
+
+                    ts : Math.max(writeEvents.map(e => e.ts))
                 });
             }
 
             res.json(output);
+        }
+    };
+
+    if(!data || data.length == 0)
+    {
+        C.event.on('event' + req.uid, handler);
+        C.timer.start(req.uid,50,20 * 1000, () => {
+            C.event.push({
+                type : 'none',
+                uid : req.uid
+            })
         });
     }
     else 
     {
-        data = data.map(d => d.me = d.uid == req.uid);
-        return res.json({
-            type : 'msg',
-            content : data 
-        });
+        await handler(data);
     }
 
 });
@@ -120,5 +136,7 @@ router.post('/whisper', async (req,res) => {
 router.post('/test', async (req,res) => {
     res.send('MESSAGE');
 });
+
+
 
 module.exports = router;

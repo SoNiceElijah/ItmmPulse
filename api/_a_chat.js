@@ -24,6 +24,23 @@ router.post('/get', async (req,res) => {
     return res.json(data);
 });
 
+router.post('/writing', async (req,res) => {
+    
+    if(req.body.uid)
+        delete req.body.uid
+
+    let ok = await C.chat.setWriter({
+        ...req.body,
+        uid : req.uid
+    });
+
+    if(!ok)
+        return res.sendStatus(400);
+
+    res.sendStatus(200);
+
+});
+
 router.post('/test', async (req,res) => {
     res.send('CHAT');
 });

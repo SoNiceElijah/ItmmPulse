@@ -2,6 +2,10 @@ const $ = require('../mappers/index');
 const $v = require('../ulils/dataChecker');
 const $m = require('../models/index');
 
+const info = require('./_c_state');
+const event = require('./_c_event');
+const timer = require('./_c_timer');
+
 module.exports = {
     new : async (ctx) => {
 
@@ -79,7 +83,110 @@ module.exports = {
         }
         else
             return false;
+    },
+    check : async (ctx) => {
+        let v = $v({ id : 'string'}, ctx);
+        if(v.id)
+            return false;
 
-    }
+        let chat = await $.chat.find(v.id);
+        if(!chat)
+            return false;
+
+        if(!chat.members.includes(ctx.uid))
+            return false;
+
+        return true;
+
+    },
+    setWriter : async (ctx) => {
+        let v = $v({ id : 'string', state : 'boolean'},ctx);
+
+        if(!v)
+            return false;
+
+        let { id, state } = v;
+        if(!id)
+            return false;
+
+        if(state === undefined || state === null)
+            return false;
+
+        let chat = await this.id({ id : v.id});
+        if(!chat.members.includes(req.uid))
+            return false;
     
+        
+        let addWriter = (chatInfo) => {
+
+            if(!chatInfo.writers)
+                chatInfo.writers = [];
+
+            if(!chatInfo.writers.includes(ctx.uid))
+                chatInfo.writers.push(ctx.uid);
+
+            let i = chat.members.length;
+            while(i--)
+            {
+                event.push({
+                    uid : chat.members[i],
+                    type : 'writing',
+                    content : {
+                        members : chatInfo.writers,
+                        cid : chatInfo.cid
+                    }
+                });
+            }
+
+            return chatInfo;
+        };
+
+        let removeWriter = (chatInfo) => {
+
+            if(!chatInfo.writers)
+                chatInfo.writers = [];
+
+            if(chatInfo.writers.includes(ctx.uid))
+            {
+                for(let i = 0; i < chatInfo.writers.length; ++i)
+                {
+                    if(chatInfo.writers[i] === ctx.uid) 
+                    {
+                        chatInfo.writers.splice(i,1);
+                        break;
+                    }
+                }
+
+
+                let i = chat.members.length;
+                while(i--)
+                {
+                    event.push({
+                        uid : chat.members[i],
+                        type : 'writing',
+                        content : {
+                            members : chatInfo.writers,
+                            cid : chatInfo.cid
+                        }
+                    });
+                }
+            }                   
+
+            return chatInfo;
+        };
+
+    
+        if(state)
+        {
+            info.setChatState(id,addWriter);
+            timer.start(req.uid, 15, 30 * 1000, () => { info.setChatState(id,removeWriter) });
+        }
+        else
+        {
+            info.setChatState(id,removeWriter);        
+            timer.stop(req.uid, 15);
+        }
+
+        return true;
+    }
 };

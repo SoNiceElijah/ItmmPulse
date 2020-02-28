@@ -25,7 +25,8 @@ module.exports = {
         for(let i = 0; i < memb.length; ++i)
             events.push({
                 uid : memb[i],
-                type : 'message'
+                type : 'message',
+                content : msg
             });
 
         return true;

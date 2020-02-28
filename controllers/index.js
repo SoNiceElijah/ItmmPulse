@@ -4,6 +4,8 @@ const event = require('./_c_event');
 const message = require('./_c_message');
 const team = require('./_c_team');
 const user = require('./_c_user');
+const state = require('./_c_state');
+const timer = require('./_c_timer');
 
 module.exports = {
     chat,
@@ -11,5 +13,7 @@ module.exports = {
     event,
     message,
     team,
-    user
+    user,
+    state,
+    timer
 };
