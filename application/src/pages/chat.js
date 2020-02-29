@@ -30,12 +30,26 @@ class Chat extends React.Component {
         
         this.longPoll = this.longPoll.bind(this);
         this.openChat = this.openChat.bind(this);
-        this.notifications = this.notifications.bind(this);        
+        this.notifications = this.notifications.bind(this);  
+        
+        this.findUserByid = this.findUserByid.bind(this);
         
         this.state.msgInterval = null;
         this.state.connection = null;
 
         this.state.write = false;
+    }
+
+    findUserByid(id) {
+
+        let user = this.state.chats.members.find(e => e._id === id);
+
+        if(!user)
+        {
+            this.componentDidMount(false);
+        }
+
+        return user;
     }
 
     componentDidMount(newLongPoll = true) {
@@ -71,17 +85,9 @@ class Chat extends React.Component {
 
 
         if(newLongPoll) {
-          console.log('Open longpoll');
+            console.log('Open longpoll');
             //Long polling
-            axios.post('/api/message/last')
-                .then((e) => {
-                    console.log(e.data);
-
-                    if(e.data.length == 0)
-                    {
-                        this.longPoll('000000000000000000000000');
-                    }
-                })
+            this.longPoll(help.toUTC(new Date()));
         }
     }
 
@@ -151,6 +157,7 @@ class Chat extends React.Component {
 
         data.msg = msg;
         data.cid = this.state.currentChat;
+        data.random = Math.floor(Math.random() * 1000);
 
         msgBox.value = '';
 
@@ -173,6 +180,11 @@ class Chat extends React.Component {
         }
         else
         {
+            axios.post('/api/chat/writing',{
+                id : data.cid,
+                state : false
+            });
+            this.state.write = false;
             axios.post('/api/message/send',data)
                 .then((e) => {
                     
@@ -193,24 +205,31 @@ class Chat extends React.Component {
         console.log('unmount');
     }
 
-    longPoll(id) {
+    longPoll(ts) {
+        console.log(`LongPollCalled with TS: ${ts}`);
         axios.post('/api/message/updates',{
-            id : id
+            ts : ts
         }, {
             cancelToken : new CancelToken((c) =>{
                 colseLongPoll = c;
             })
         }).then((e) => {
+            console.log('LONG_POLL_DATA:');
             console.log(e.data);
+
             let newMsgsEvent = e.data.find(e => e.type == 'msg');
+            let chatWriteEvent = e.data.find(e => e.type == 'write');
            
             if(this.state.longpoll) {   
 
-                if(newMsgsEvent) {
-                    this.longPoll(newMsgsEvent.content[newMsgsEvent.content.length - 1]._id);
+                if(e.data.length == 1 && e.data[0].type == 'restart') {
+                    console.log('LongPollRestarted');
+                    this.longPoll(ts);
                 }
                 else {
-                    this.longPoll(id);
+                    console.log('LongPollUpdated');
+                    let nums = e.data.map(el => el.ts);
+                    this.longPoll(Math.max.apply(Math, nums));
                 }
             }
             
@@ -223,10 +242,41 @@ class Chat extends React.Component {
                 this.notifications(newMsgsEvent);
             }
 
+            if(chatWriteEvent)
+            {
+                let currentChatWriters = chatWriteEvent.content.filter(e => e.cid == this.state.currentChat).map(e => e.members);
+                currentChatWriters = currentChatWriters[currentChatWriters.length - 1];
+                
+                this.changeWriters(currentChatWriters);
+            }
+
         }).catch((e) => {
             console.log('longPollError');
             console.log(e);
         });
+    }
+
+    changeWriters(writers) {
+
+        writers = writers.filter(e => e != this.state.me._id);
+        writers = writers.map(e => this.findUserByid(e)).map(e => e.name);
+        console.log(this.state);
+        let div = document.getElementById('writers');
+        if(writers.length == 0)
+        {         
+            div.classList.add('opacity-0');
+        }
+        else
+        {
+            let str = writers.join(', ');
+            if(str.length > 15)
+                str = str.slice(0,15) + '...';
+
+            this.setState({
+                writers : str
+            })
+            div.classList.remove('opacity-0');
+        }
     }
 
     notifications(e) {
@@ -245,8 +295,6 @@ class Chat extends React.Component {
                 else
                     s['cidal' + e.content[i].cid]++;
             }
-
-            console.log(s);
             let k = 0;
             for(let param in s)
             {
@@ -306,36 +354,61 @@ class Chat extends React.Component {
 
     textChangeMonitor(e) {
 
+        if(this.state.currentChat == '')
+            return;
+
         let input = document.getElementById('msg');
 
         if(!this.state.write && !help.isEmptyOrSpaces(input.value))
         {
             console.log('STARTWrite');
+            axios.post('/api/chat/writing',{
+                id : this.state.currentChat,
+                state : true
+            });
             this.state.write = true;
         }
         else if(help.isEmptyOrSpaces(input.value))
         {
             console.log('StopWrite');
+            axios.post('/api/chat/writing',{
+                id : this.state.currentChat,
+                state : false
+            });
             this.state.write = false;
         }
     }   
 
     focuseGotMonitor(e) {
 
+        if(this.state.currentChat == '')
+            return;
+
         let input = document.getElementById('msg');
 
         if(!help.isEmptyOrSpaces(input.value))
         {
             console.log('STARTWrite');
+            axios.post('/api/chat/writing',{
+                id : this.state.currentChat,
+                state : true
+            });
             this.state.write = true;
         }
     }
 
     focuseLostMonitor(e) {
 
+        if(this.state.currentChat == '')
+            return;
+
         if(this.state.write)
         {
             console.log('StopWrite');
+            axios.post('/api/chat/writing',{
+                id : this.state.currentChat,
+                state : false
+            });
             this.state.write = false;
         }
     }
@@ -349,7 +422,8 @@ class Chat extends React.Component {
                 {this.chatPanel()}
                 <div className="right-box relative">
                     <div className="message-panel-big" id="messagePanel">
-                        <MessagePanel newMsg={this.state.msgs} me={this.state.me} members={this.state.chats.members} id={this.state.currentChat} exists={this.state.currentExist}/>
+                        <MessagePanel newMsg={this.state.msgs} me={this.state.me} findUser={this.findUserByid} id={this.state.currentChat} exists={this.state.currentExist}/>
+                        <div id="writers" className="message-panel-writers delay opacity-0"><b>{this.state.writers}</b> набирают сообщение... </div>
                     </div>
                     <div className="send-panel">
                         <div className="send-input relative">

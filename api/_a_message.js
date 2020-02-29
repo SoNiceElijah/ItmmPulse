@@ -41,9 +41,9 @@ router.post('/updates', async (req,res) => {
         C.timer.stop(req.uid,50);
         if(events.length == 1 && events[0].type == 'none')
         {
-            return res.json({
+            return res.json([{
                 type : 'restart'
-            });
+            }]);
         }
         else
         {
@@ -57,19 +57,20 @@ router.post('/updates', async (req,res) => {
                 output.push({
                     type : 'msg',
                     content : data,
-
-                    ts : Math.max(msgEvents.map(e => e.ts))
+                    
+                    ts : Math.max(...msgEvents.map(e => e.ts))
                 });
+
             }
 
-            let writeEvents = events.filter(e => e.type == 'writing')
+            let writeEvents = events.filter(e => e.type == 'writing');
             if(writeEvents.length != 0)
             {
                 output.push({
                     type : 'write',
-                    content : writeEvents,
-
-                    ts : Math.max(writeEvents.map(e => e.ts))
+                    content : writeEvents.map(e => e.content),
+                    
+                    ts : Math.max(...writeEvents.map(e => e.ts))
                 });
             }
 

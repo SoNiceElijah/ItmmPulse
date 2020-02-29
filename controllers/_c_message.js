@@ -19,7 +19,7 @@ module.exports = {
         if(!chat.members.includes(msg.uid))
             return false;
 
-        $.message.insert(msg);
+        msg._id = await $.message.insert(msg);
         let memb = chat.members;
 
         for(let i = 0; i < memb.length; ++i)

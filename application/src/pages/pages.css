@@ -246,13 +246,27 @@ div[me]:hover {
     position: absolute;
     left: 0;
     right: 0;
-    bottom: 10px;
+    bottom: 30px;
 
-    max-height: calc(100% - 10px);
+    max-height: calc(100% - 30px);
 
     overflow-y: scroll;
     overflow-x: hidden;
 } 
+
+.message-panel-writers {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+
+    text-align: left;
+    padding: 0 20px 0 20px;
+
+    height: 30px;
+
+    user-select: none;
+}
 
 .message-item {
     padding: 10px 20px 10px 20px;

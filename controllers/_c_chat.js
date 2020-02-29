@@ -112,8 +112,8 @@ module.exports = {
         if(state === undefined || state === null)
             return false;
 
-        let chat = await this.id({ id : v.id});
-        if(!chat.members.includes(req.uid))
+        let chat = await module.exports.id({ id : v.id});
+        if(!chat.members.includes(ctx.uid))
             return false;
     
         
@@ -133,7 +133,7 @@ module.exports = {
                     type : 'writing',
                     content : {
                         members : chatInfo.writers,
-                        cid : chatInfo.cid
+                        cid : chatInfo.id
                     }
                 });
             }
@@ -166,7 +166,7 @@ module.exports = {
                         type : 'writing',
                         content : {
                             members : chatInfo.writers,
-                            cid : chatInfo.cid
+                            cid : chatInfo.id
                         }
                     });
                 }
@@ -179,12 +179,12 @@ module.exports = {
         if(state)
         {
             info.setChatState(id,addWriter);
-            timer.start(req.uid, 15, 30 * 1000, () => { info.setChatState(id,removeWriter) });
+            timer.start(ctx.uid, 15, 30 * 1000, () => { info.setChatState(id,removeWriter) });
         }
         else
         {
             info.setChatState(id,removeWriter);        
-            timer.stop(req.uid, 15);
+            timer.stop(ctx.uid, 15);
         }
 
         return true;

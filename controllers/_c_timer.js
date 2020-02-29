@@ -13,7 +13,7 @@ function start(id, key, time, func) {
 }
 
 function stop(id, key) {
-    if(timers[uid] && timers[uid][key])
+    if(timers[id] && timers[id][key])
         clearTimeout(timers[id][key])
 }
 

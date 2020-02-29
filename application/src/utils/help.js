@@ -46,10 +46,16 @@ function time(utc) {
 
 }
 
+function toUTC(date) 
+{
+    return (date.getTime() + date.getTimezoneOffset() * 60 * 1000);
+}
+
 module.exports = {
     getCookie,
     isEmptyOrSpaces,
     validate,
     val,
-    time
+    time,
+    toUTC
 }

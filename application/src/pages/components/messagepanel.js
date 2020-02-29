@@ -56,7 +56,7 @@ class MessagePanel extends React.Component {
 
     message(data) {
 
-        let user = this.props.members.find(u => u._id == data.uid);
+        let user = this.props.findUser(data.uid);
         data.from = user.name;
         data.color = user.color;
         
@@ -119,10 +119,7 @@ class MessagePanel extends React.Component {
 
             this.setState({
                 messages : msgs
-            })
-
-            console.log(this.state.messages);
-            
+            })            
 
         } else {
 

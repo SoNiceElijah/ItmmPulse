@@ -26,10 +26,10 @@ module.exports = {
     },
     setUserState : async (uid, func) => {
 
-        let state = await this.getUserState(uid);
+        let state = await module.exports.getUserState(uid);
         if(!state) {
-            await this.new({ uid : uid });
-            state = await this.getUserState(uid);
+            await module.exports.new({ id : uid, type : 'user' });
+            state = await module.exports.getUserState(uid);
         }
 
         let index = StateStorage.indexOf(state);
@@ -38,10 +38,10 @@ module.exports = {
     },
     setChatState : async (cid, func) => {
 
-        let state = await this.getChatState(cid);
+        let state = await module.exports.getChatState(cid);
         if(!state) {
-            await this.new({ cid : cid });
-            state = await this.getChatState(cid);
+            await module.exports.new({ id : cid, type : 'chat' });
+            state = await module.exports.getChatState(cid);
         }
 
         let index = StateStorage.indexOf(state);
@@ -50,10 +50,10 @@ module.exports = {
     },
     setTeamState : async (tid, func) => {
         
-        let state = await this.getTeamState(tid);
+        let state = await module.exports.getTeamState(tid);
         if(!state) {
-            await this.new({ tid : tid });
-            state = await this.getTeamState(tid);
+            await module.exports.new({ id : tid, type : 'team' });
+            state = await module.exports.getTeamState(tid);
         }
 
         let index = StateStorage.indexOf(state);

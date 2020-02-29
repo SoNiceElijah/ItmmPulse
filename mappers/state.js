@@ -9,8 +9,8 @@ module.exports = {
         if(!data._id)
             data._id = new oid();
 
-        base.state.insertOne(state);
-        return state._id + '';
+        base.state.insertOne(data);
+        return data._id + '';
     },
     all : async () => {
         return await base.state.find({}).toArray();  

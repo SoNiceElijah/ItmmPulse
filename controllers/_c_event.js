@@ -39,14 +39,14 @@ let interval = setInterval(() => {
         let obj = newEvents[0];
         let allEvents = newEvents.filter((item) => item.uid == obj.uid);
 
-        let types = newEvents.map(e => e.type);
+        let types = allEvents.map(e => e.type).filter((e,i,s) => s.indexOf(e) === i);
         let typeEvents = [];
         for(let i = 0; i < types.length; ++i)
             typeEvents.push([]);
 
-        for(let i = 0; i < newEvents.length; ++i)
+        for(let i = 0; i < allEvents.length; ++i)
         {
-            let o = newEvents[i];
+            let o = allEvents[i];
             typeEvents[types.indexOf(o.type)].push(o);
         }
 
@@ -60,12 +60,13 @@ let interval = setInterval(() => {
             for(let i = 0; i < riseFuncArray.length; ++i)
                 riseFuncArray[i](allEvents);
 
-            delete portal['event' + allEvents[0].uid];
+            delete portal[riseId];
         }
 
       
         
         for(let i = 0; i < typeEvents.length; ++i) {
+
             let riseTypeId = typeEvents[i][0].type + "" + typeEvents[i][0].uid;
             let riseTypeFuncArray = portal[riseTypeId];
             

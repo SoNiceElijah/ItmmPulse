@@ -18,6 +18,28 @@ const site = require('../site/site');
 app.set('views', __mainpath + '/site/views');
 app.set('view engine','pug');
 
+//MESURE
+let reqNum = 0;
+const { performance } = require('perf_hooks');
+app.use((req,res,next) => {
+
+    let lockNum = reqNum++;
+    let t1 = performance.now();
+    console.log(`${lockNum} ${req.method} ${req.originalUrl} %c[STARTED]`,'color : #2643b5');
+
+    res.on('finish', () => {            
+        let t2 = performance.now();
+        console.log(`${lockNum} ${req.method} ${req.originalUrl} in ${t2 - t1}ms %c[FINISHED]  `,'color : #24bf50');
+    })
+
+    res.on('close', () => {
+        let t2 = performance.now();
+        console.log(`${lockNum} ${req.method} ${req.originalUrl} in ${t2 - t1}ms %c[CLOSED] `,'color : #bf3e24');
+    })
+
+    next();
+});
+
 app.use(bp.json());
 app.use(cp());
 app.use(express.static(__mainpath + '/public'));
@@ -37,6 +59,11 @@ api.use('/team', r_team);
 api.use('/user', r_user);
 
 app.use('/api',api);
+
+app.use(function(err, req, res, next) {
+    console.error(err);
+    res.sendStatus(500);
+});
 
 module.exports = app;
 
