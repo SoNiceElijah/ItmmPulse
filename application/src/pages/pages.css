@@ -140,14 +140,38 @@ div[me]:hover {
 .send-input input {
     background: transparent;
 
+    height: 0;
+    width: 0;
+
     border: none;
     display: inline-block;
+
+    outline: none;
+
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 16px;
+
+    color: #dfdfdf;
+
+    transition: 0.2s;
+
+    vertical-align: top;
+    display: inline-block;
+}
+
+.send-input-div {
+    background: transparent;
+
+    border: none;
     width: calc(100% - 200px);
 
     outline: none;
 
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     font-size: 16px;
+
+    line-height: 20px;
+    height: 20px;
 
     color: #dfdfdf;
 
@@ -157,6 +181,9 @@ div[me]:hover {
 
     vertical-align: top;
     display: inline-block;
+
+    overflow: hidden;
+
 }
 
 .form input:focus {
@@ -218,6 +245,55 @@ div[me]:hover {
 
     margin-top: 10px;
     margin-left: 7px;
+
+}
+
+.send-button-big {   
+
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    cursor: pointer;
+}
+
+.emoji-button {
+
+    width: 51px;
+    height: 41px;
+
+    display: inline-block;
+
+    position: absolute;
+    right: 51px;
+    top: 0px;
+    border-left: 1px solid #222224;
+
+    text-align: center;
+    line-height: 41px;
+
+    
+    cursor: pointer;
+}
+
+.emoji-button:hover {
+    background: #2e2e31;
+}
+
+.emoji-image {
+    display: inline-block;
+    background-image: url(/emoji/svg/004-expressionless.svg);
+    background-size: cover;
+
+    width: 20px;
+    height: 20px;
+
+    margin-top: 10px;
+    margin-left: 2px;
 
 }
 
@@ -418,4 +494,106 @@ div[me]:hover {
     z-index: 3;
 
     
+}
+
+.message-top-loading .loader {
+    margin-top: -10px;
+    margin-bottom: 0;
+
+    height: 20px;
+    width: 20px;
+}
+
+.message-top-loading .loader::before, .message-top-loading .loader::after {
+    height: 20px;
+    width: 20px;
+}
+
+.message-top-loading .loader::before {
+    left: -30px;
+}
+
+.message-top-loading .loader::after {
+    left: 30px;
+}
+
+.message-top-loading {
+    height: 60px;
+}
+
+.message-date-string {
+    padding: 0 20px 0 20px;
+    text-align: center;
+    color: #a3a3a3;
+}
+
+.message-line {
+    border-top: 1px solid #3f3f3f;
+    position: absolute;
+
+    top: 10px;
+    left: 45px;
+    right: 45px;
+    z-index: 0;
+}
+
+.message-date-string-content {
+    display: inline-block;
+    background: #202024;
+
+    padding: 0 20px 0 20px;
+    position: relative;
+}
+
+[contentEditable=true]:empty:not(:focus):before{
+
+    color: #747474;
+    content:attr(data-text)
+}
+
+.emoji-panel {
+    position: absolute;
+    top: -267px;
+
+    width: 170px;
+    height: 200px;
+
+    right: 20px;
+    background: #2e2e33;
+    border-radius: 10px;
+
+    padding: 20px;
+
+    z-index: 1250;
+    box-shadow: 1px 0 5px 0px rgba(0, 0, 0, 0.1);
+
+    display: flex;
+    flex-flow: row wrap;
+}
+
+.emoji-small {
+    width: 24px;
+    height: 24px;
+    padding: 5px;
+
+    border-radius: 3px;
+
+    transition: 0.1s;
+
+    cursor: pointer;
+}
+
+.emoji-small:hover {
+    background: #222222;
+}
+
+.emoji-small-text {
+    width: 20px;
+    height: 20px;
+
+    vertical-align: middle;
+}
+
+.fake-text {
+    visibility: collapse;
 }

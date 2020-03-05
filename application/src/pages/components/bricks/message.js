@@ -27,7 +27,7 @@ class MessageItem extends React.Component {
 
             return (
                 <div className={className} id={'mid' + data._id}>
-                    <div className="message-item-avatar">{data.from[0]}</div>
+                    <div style={{background : data.color}} className="message-item-avatar">{data.from.toUpperCase()[0]}</div>
                     <div className="message-item-content">
                         <div className="message-item-owner">{data.from}</div>
                         <div className="message-item-msg">{data.msg}</div>
@@ -44,7 +44,7 @@ class MessageItem extends React.Component {
             return (
                 <div className={className}  id={'mid' + data._id}>
                     <div className="me-avatar-fix">
-                        <div className="message-item-avatar">{data.from[0]}</div>
+                        <div style={{background : data.color}}  className="message-item-avatar">{data.from.toUpperCase()[0]}</div>
                     </div>
                     <div className="message-item-content">
                         <div className="message-item-owner">{data.from}</div>

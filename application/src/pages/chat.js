@@ -26,6 +26,8 @@ class Chat extends React.Component {
         this.state.currentExist = '';
         this.state.msgs = [];
 
+        this.state.emoji = [];
+
         this.state.longpoll = true;
         
         this.longPoll = this.longPoll.bind(this);
@@ -33,6 +35,7 @@ class Chat extends React.Component {
         this.notifications = this.notifications.bind(this);  
         
         this.findUserByid = this.findUserByid.bind(this);
+        this.findChatByid = this.findChatByid.bind(this);
         
         this.state.msgInterval = null;
         this.state.connection = null;
@@ -52,8 +55,23 @@ class Chat extends React.Component {
         return user;
     }
 
+    findChatByid(id) {
+        let chat = this.state.chats.chats.find(e => e._id === id);
+
+        if(!chat)
+        {
+            this.componentDidMount(false);
+        }
+
+        return chat;
+    }
+
     componentDidMount(newLongPoll = true) {
 
+        axios.post('/api/message/emoji')
+            .then((e) => {
+                this.state.emoji = e.data;
+            });
         //Me and chats
         axios.post('/api/user/me')
             .then((e) => {
@@ -146,6 +164,7 @@ class Chat extends React.Component {
             return;
 
         let msgBox = document.getElementById('msg');
+        let fakeBox = document.getElementById('fake_msg');
         if(!msgBox)
             return;
 
@@ -160,12 +179,14 @@ class Chat extends React.Component {
         data.random = Math.floor(Math.random() * 1000);
 
         msgBox.value = '';
+        fakeBox.innerHTML = '';
 
         if(!this.state.currentExist)
         {
             axios.post('/api/message/whisper',data)
                 .then((e) => {
                     msgBox.value = '';
+                    fakeBox.innerHTML = '';
                     this.componentDidMount(false);
 
                     this.setState({
@@ -260,7 +281,6 @@ class Chat extends React.Component {
 
         writers = writers.filter(e => e != this.state.me._id);
         writers = writers.map(e => this.findUserByid(e)).map(e => e.name);
-        console.log(this.state);
         let div = document.getElementById('writers');
         if(writers.length == 0)
         {         
@@ -282,6 +302,9 @@ class Chat extends React.Component {
     notifications(e) {
         try {
             
+            let cids = e.content.map(m => m.cid);
+            let chats = cids.map(c => this.findChatByid(c));
+
             console.log('Do Notifications!');
 
             let s = {};
@@ -354,10 +377,15 @@ class Chat extends React.Component {
 
     textChangeMonitor(e) {
 
-        if(this.state.currentChat == '')
+        if(this.state.currentChat == '' || !this.state.currentExist)
             return;
-
+            
         let input = document.getElementById('msg');
+
+        let text = e.target.innerText;
+        text = text.replace(/<br>/gi,' ');
+        text = text.replace(/&nbsp;/g,' ');
+        input.value = text;
 
         if(!this.state.write && !help.isEmptyOrSpaces(input.value))
         {
@@ -381,7 +409,7 @@ class Chat extends React.Component {
 
     focuseGotMonitor(e) {
 
-        if(this.state.currentChat == '')
+        if(this.state.currentChat == '' || !this.state.currentExist)
             return;
 
         let input = document.getElementById('msg');
@@ -399,7 +427,7 @@ class Chat extends React.Component {
 
     focuseLostMonitor(e) {
 
-        if(this.state.currentChat == '')
+        if(this.state.currentChat == '' || !this.state.currentExist)
             return;
 
         if(this.state.write)
@@ -413,6 +441,29 @@ class Chat extends React.Component {
         }
     }
 
+    riseEmoji() {
+        let panel = document.getElementById('emojiPanel');
+        panel.classList.remove('opacity-0');
+    }
+
+    closeEmoji() {
+        let panel = document.getElementById('emojiPanel');
+        panel.classList.add('opacity-0');
+    }
+
+    mapEmoji(m) {
+        let path = "/emoji/svg/" + m;
+        return (
+            <img className="emoji-small" onClick={() => {this.pushEmoji(m)}} src={path}></img>
+        )
+    }
+
+    pushEmoji(m) {
+        let path = "/emoji/svg/" + m;
+        let fake = document.getElementById('fake_msg');
+        fake.innerHTML += `<img class="emoji-small-text" src="${path}" ></img><div class="fake-text">::${m}</div>`;
+    }
+
     render() {
         return (
             <div className="big standart-back relative">
@@ -423,21 +474,47 @@ class Chat extends React.Component {
                 <div className="right-box relative">
                     <div className="message-panel-big" id="messagePanel">
                         <MessagePanel newMsg={this.state.msgs} me={this.state.me} findUser={this.findUserByid} id={this.state.currentChat} exists={this.state.currentExist}/>
-                        <div id="writers" className="message-panel-writers delay opacity-0"><b>{this.state.writers}</b> набирают сообщение... </div>
+                        <div id="writers" className="message-panel-writers delay opacity-0"><b>{this.state.writers}</b> набирает сообщение... </div>
                     </div>
                     <div className="send-panel">
                         <div className="send-input relative">
                             <input 
-                                onChange={(e) => this.textChangeMonitor(e)} 
-                                onFocus={(e) => this.focuseGotMonitor(e)} 
-                                onBlur={(e) => this.focuseLostMonitor(e)} 
-                                onKeyUp={(e) => { if(e.key == 'Enter') this.send(); }}
                                 id="msg" 
                                 type="text" 
                                 autoComplete="off" 
                                 name="msgbox" 
                                 placeholder="Сообщение..." />
-                            <div className="emoji-button" id="emojiButton"></div>
+                            <div
+                            
+                                data-text="Enter text here"
+                            
+                                onInput={(e) => this.textChangeMonitor(e)} 
+                                onFocus={(e) => this.focuseGotMonitor(e)} 
+                                onKeyUp={(e) => { if(e.key == 'Enter') this.send(); }}
+                                onBlur={(e) => this.focuseLostMonitor(e)}
+
+                                className="send-input-div"
+                                contentEditable="true"
+                                id="fake_msg" 
+                                type="text" 
+                                autoComplete="off" 
+                             />
+                            <div 
+                                className="emoji-button" 
+                                id="emojiButton"
+                                onMouseEnter={() => {this.riseEmoji()}}
+                                onMouseLeave={() => {this.closeEmoji()}}
+                            >
+                                <div className="emoji-image" ></div>
+                            </div>
+                            <div 
+                                id="emojiPanel" 
+                                className="emoji-panel opacity-0 delay t-delay"
+                                onMouseEnter={() => {this.riseEmoji()}}
+                                onMouseLeave={() => {this.closeEmoji()}}
+                            >
+                                {this.state.emoji.map(m => this.mapEmoji(m))}
+                            </div>
                             <div onClick={((e) => {this.send()})} className="send-button" id="send">
                                 <div className="send-image"></div>
                             </div>

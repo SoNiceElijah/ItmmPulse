@@ -6,6 +6,11 @@ const events = require('./_c_event');
 
 const time = require('../ulils/dateConverter');
 
+const path = require('path');
+const fs = require('fs');
+
+const __mainpath = path.dirname(require.main.filename);
+
 module.exports = {
     send : async (ctx) => {
         let msg = $v($m.message, ctx);
@@ -60,19 +65,21 @@ module.exports = {
             let m2 = u2.chat_ids;
             m2.push(dir._id + '');
             $.user.updateChats(u2._id + '',m2);
-        }
+        }       
+        
+        msg.cid = dir._id + '';
+        msg._id = await $.message.insert(msg);
 
         events.push({
             uid : msg.cid,
-            type : 'message'
+            type : 'message',
+            content : msg
         });
         events.push({
             uid : msg.uid,
-            type : 'message'
+            type : 'message',
+            content : msg
         });
-        
-        msg.cid = dir._id + '';
-        $.message.insert(msg);
 
         return dir._id + '';
 
@@ -162,5 +169,10 @@ module.exports = {
             return false;
         }
 
+    },
+
+    emoji : async () => {
+        let e = fs.readdirSync(__mainpath + '/application/public/emoji/svg');
+        return e;
     }
 }

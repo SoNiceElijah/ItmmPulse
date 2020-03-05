@@ -19,6 +19,14 @@ class MessagePanel extends React.Component {
         this.state.clicks = 0;
 
         this.componentDidUpdate = this.componentDidUpdate.bind(this);
+        this.getHistory = this.getHistory.bind(this);
+        this.messageArray = this.messageArray.bind(this);
+
+        this.state.rescroll = true;
+        this.state.full = true;
+
+        this.state.topdiff = 0;
+
     }
 
     notSelected() {
@@ -45,11 +53,49 @@ class MessagePanel extends React.Component {
                 <div id="messageLoader" className="message-panel-loader">
                     <div className="loader"></div>
                 </div>
-                <div className="message-panel" id="messagePanel2">
+                <div className="message-panel" onScroll={(e) => {this.scrollHandler(e)}} id="messagePanel2">
+                    <div className="message-top-loading" id="historyLoader">
+                        <div className="loader"></div>
+                    </div>
                     <div className="message-list">
-                        {this.state.messages.map(m => this.message(m))}
+                        {this.messageArray(this.state.messages)}
                     </div>
                 </div>
+            </div>
+        );
+    }
+
+    messageArray(msgs) {
+
+        if(msgs.length == 0)
+            return;
+
+        let datestr = help.timeDate(msgs[0].date);
+        let components = [];
+
+        components.push(this.dateStringComponent(datestr));
+
+        let laststr = datestr;
+        for(let i = 0; i < msgs.length; ++i)
+        {
+            datestr = help.timeDate(msgs[i].date);
+            if(datestr != laststr)
+            {
+                components.push(this.dateStringComponent(datestr));
+            }
+
+            components.push(this.message(msgs[i]));
+            laststr = datestr;
+        }
+
+        return components;
+    }
+
+    dateStringComponent(str) {
+        return (
+            <div key={str} className="message-date-string relative">
+                <div className="message-line "></div>
+                <div className="message-date-string-content">{str}</div>
             </div>
         );
     }
@@ -85,53 +131,119 @@ class MessagePanel extends React.Component {
 
             this.state.clicks++;
 
-            axios.post('/api/message/history',{
-                id : this.props.id,
-                limit : 20
-            }).then((e) => {
-                e.data.reverse();
-                this.setState({
-                    messages : e.data
-                })
-
-                this.state.clicks--;
-                if(this.state.clicks === 0) {
-                    loader.classList.add('opacity-0');
-                    setTimeout(() => {     
-                        if(this.state.clicks === 0) {
-                            loader.classList.add('display-none');      
-                            loader.classList.remove('delay');  
-                        }  
-                    },200);
-                }
-
-            }).catch((e) => {
-                console.log('WTF');
-                console.log(e);
-            });
+            this.state.full = true;
+            this.state.messages = [];
+            this.getHistory(true);
+            this.state.rescroll = true;
+            
         }
-        else if(prevProps.newMsg  != this.props.newMsg)
+        else if(prevProps.newMsg != this.props.newMsg)
         {
             let msgs = this.state.messages;
 
             let news = this.props.newMsg.map(m => { return { ...m, anim : true}});;
             msgs = msgs.concat(news);
 
+            let mids = msgs.map(m => m._id);
+            msgs = msgs.filter((e,i) => mids.indexOf(e._id) === i );
+
+            this.state.rescroll = true;
+
             this.setState({
                 messages : msgs
             })            
 
         } else {
-
+        
+            console.log('RESIZE?');
             let objDiv = document.getElementById("messagePanel2");
 
             if(objDiv)
-                objDiv.scrollTop = objDiv.scrollHeight;
+            {
+                if(this.state.rescroll)
+                    objDiv.scrollTop = objDiv.scrollHeight;
+                else
+                    objDiv.scrollTop = objDiv.scrollHeight - this.state.topdiff;
+            }
         }
     }
 
     componentWillUnmount() {
         console.log('Message panel unmount');
+    }
+
+    getHistory(watch = false) {
+
+        document.getElementById('historyLoader').classList.remove('opacity-0');
+
+        axios.post('/api/message/history',{
+            id : this.props.id,
+            limit : 20,
+            skip : this.state.messages.length
+        }).then((e) => {
+
+            let loader = document.getElementById('messageLoader');
+
+            let objDiv = document.getElementById("messagePanel2");
+
+            if(objDiv)
+                this.state.rescroll = objDiv.scrollHeight - objDiv.scrollTop === objDiv.clientHeight;
+
+            e.data.reverse();
+
+            let msgs = this.state.messages;
+
+            msgs = e.data.concat(msgs);
+            let mids = msgs.map(m => m._id);
+            msgs = msgs.filter((e,i) => mids.indexOf(e._id) === i );
+
+            if(e.data.length < 20) {
+                document.getElementById('historyLoader').classList.add('opacity-0');
+                this.state.full = true;
+            }
+            else
+            {
+                this.state.full = false;
+            }
+
+            if(objDiv)
+                this.state.topdiff = objDiv.scrollHeight - objDiv.scrollTop;
+            console.log(this.state.messages.length);
+
+            this.setState({
+                messages : msgs
+            })
+
+
+
+            if(watch) {
+                this.state.clicks--;
+                if(this.state.clicks === 0) {
+                    loader.classList.add('opacity-0');
+                    setTimeout(() => {
+                        if(this.state.clicks === 0) {
+                            loader.classList.add('display-none');      
+                            loader.classList.remove('delay');  
+                        }  
+                    },200);
+                }
+            }
+
+        }).catch((e) => {
+            console.log('WTF');
+            console.log(e);
+        });
+    }
+
+    scrollHandler(e) {
+
+        let element = e.target;
+
+        if(element.scrollTop == 0 && !this.state.full)
+        {
+            console.log('GOT HISTORY');
+            this.getHistory();
+        }
     }
 
     render() {

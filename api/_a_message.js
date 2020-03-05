@@ -134,6 +134,10 @@ router.post('/whisper', async (req,res) => {
     res.json({id : cid});
 });
 
+router.post('/emoji', async (req,res) => {
+    res.json(await C.message.emoji());
+});
+
 router.post('/test', async (req,res) => {
     res.send('MESSAGE');
 });

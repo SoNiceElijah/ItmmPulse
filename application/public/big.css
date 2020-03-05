@@ -7,7 +7,7 @@ body {
 
 
 .delay {
-    transition: 0.2s !important;
+    transition: 0.2s;
 }
 
 .easy-delay {
@@ -26,3 +26,8 @@ body {
 .display-none {
     display: none !important;
 }
+
+.t-delay {
+    transition-delay: 0.1s;
+}
+
