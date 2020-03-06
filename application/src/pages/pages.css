@@ -81,12 +81,12 @@
 }
 
 .member-list-item strong {
-    color: #b1493b;
+    color: #45a199;
     margin-top: -3px;
 }
 
-.member-list-item strong#me {
-    color: #3bb176;
+.member-list-item strong#me, .member-list-item span#me {
+    color: #0ebb87;
 }
 
 div[me]:hover {
@@ -164,6 +164,7 @@ div[me]:hover {
 
     border: none;
     width: calc(100% - 200px);
+    margin-left: 25px;
 
     outline: none;
 
@@ -214,7 +215,6 @@ div[me]:hover {
     right: 0px;
     padding-right: 10px;
     top: 0px;
-    border-left: 1px solid #222224;
 
     text-align: center;
     line-height: 41px;
@@ -226,13 +226,11 @@ div[me]:hover {
 .send-button:hover {
     background: #2e2e31;
     border-radius: 0 8px 8px 0;
-    border-left: 1px solid #2e2e31;
 }
 
 .send-button:active {
     background: #1f1f20;
     border-radius: 0 8px 8px 0;
-    border-left: 1px solid #1f1f20;
 }
 
 .send-image {
@@ -271,7 +269,6 @@ div[me]:hover {
     position: absolute;
     right: 51px;
     top: 0px;
-    border-left: 1px solid #222224;
 
     text-align: center;
     line-height: 41px;
@@ -286,7 +283,7 @@ div[me]:hover {
 
 .emoji-image {
     display: inline-block;
-    background-image: url(/emoji/svg/004-expressionless.svg);
+    background-image: url(/buttons/emoji.png);
     background-size: cover;
 
     width: 20px;
@@ -349,6 +346,10 @@ div[me]:hover {
     overflow: hidden;
 }
 
+.message-item-msg {
+    margin-top: 10px;
+}
+
 .message-item-avatar {
     width: 40px;
     height: 40px;
@@ -368,6 +369,8 @@ div[me]:hover {
     margin-left: 10px;
     padding: 15px;
     border-radius: 8px;
+
+    min-width: 80px;
 
     float: none;
 
@@ -548,7 +551,8 @@ div[me]:hover {
 [contentEditable=true]:empty:not(:focus):before{
 
     color: #747474;
-    content:attr(data-text)
+    content:attr(data-text);
+    cursor: text;
 }
 
 .emoji-panel {
@@ -558,18 +562,28 @@ div[me]:hover {
     width: 170px;
     height: 200px;
 
-    right: 20px;
+    right: -40px;
     background: #2e2e33;
     border-radius: 10px;
 
     padding: 20px;
 
-    z-index: 1250;
+    z-index: -2;
     box-shadow: 1px 0 5px 0px rgba(0, 0, 0, 0.1);
 
-    display: flex;
     flex-flow: row wrap;
+    display: flex;
+
+    opacity: 0.0;
 }
+
+.emoji-button:hover .emoji-panel {
+
+    z-index: 2;
+    opacity: 1.0;
+}
+
+
 
 .emoji-small {
     width: 24px;
@@ -595,5 +609,86 @@ div[me]:hover {
 }
 
 .fake-text {
-    visibility: collapse;
+    overflow: hidden;
+    width: 0px;
+    float: left;
+}
+
+.attach-button {
+
+    width: 41px;
+    height: 41px;
+
+    display: inline-block;
+
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    border-left: 1px solid #222224;
+
+    text-align: center;
+    line-height: 41px;
+
+    
+    cursor: pointer;
+}
+
+.attach-button:hover {
+    background: #2e2e31;
+    border-radius: 8px 0 0 8px;
+}
+
+.attach-image {
+    display: inline-block;
+    background-image: url(/buttons/attach.png);
+    background-size: cover;
+
+    width: 20px;
+    height: 20px;
+
+    margin-top: 10px;
+    margin-left: 2px;
+
+}
+
+.attach-panel {
+    position: absolute;
+    bottom: 50px;
+
+    background: #2e2e33;
+
+    box-shadow: 1px 0 5px 0px rgba(0, 0, 0, 0.1);
+
+    overflow: hidden;
+    border-radius: 3px;
+    z-index: -2;
+    opacity: 0.0;
+
+    width: 150px;
+
+}
+
+.attach-button:hover .attach-panel {
+    opacity: 1.0;
+    z-index: 2;
+}
+
+
+.attach-panel  ul {
+    margin: 0;
+
+    padding: 0;
+
+    list-style-type: none;
+
+    text-align: left;
+}
+
+.attach-panel  ul li {
+    padding: 0 30px 0 30px;
+}
+
+
+.attach-panel  ul li:hover {
+    background: #272727;
 }

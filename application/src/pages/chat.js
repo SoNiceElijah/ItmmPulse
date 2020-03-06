@@ -118,7 +118,7 @@ class Chat extends React.Component {
     littleMember(data) {
         if(data.me)
             return (
-                <div  key={'key' + data._id} className="member-list-item" title="Это же я!" me="me"><strong id="me">@</strong><span>{data.name}</span></div>
+                <div  key={'key' + data._id} className="member-list-item" title="Это же я!" me="me"><strong id="me">@</strong><span id="me">{data.name}</span></div>
             );
         else if(data.exist)
             return (
@@ -159,6 +159,8 @@ class Chat extends React.Component {
     }
 
     send() {
+
+        console.log('try send');
 
         if(this.state.currentChat == '')
             return;
@@ -240,6 +242,7 @@ class Chat extends React.Component {
 
             let newMsgsEvent = e.data.find(e => e.type == 'msg');
             let chatWriteEvent = e.data.find(e => e.type == 'write');
+            let newTeamMembersEvent = e.data.find(e => e.type == 'new');
            
             if(this.state.longpoll) {   
 
@@ -269,6 +272,10 @@ class Chat extends React.Component {
                 currentChatWriters = currentChatWriters[currentChatWriters.length - 1];
                 
                 this.changeWriters(currentChatWriters);
+            }
+            if(newTeamMembersEvent)
+            {
+                this.componentDidMount(false);
             }
 
         }).catch((e) => {
@@ -376,9 +383,6 @@ class Chat extends React.Component {
     }
 
     textChangeMonitor(e) {
-
-        if(this.state.currentChat == '' || !this.state.currentExist)
-            return;
             
         let input = document.getElementById('msg');
 
@@ -386,6 +390,9 @@ class Chat extends React.Component {
         text = text.replace(/<br>/gi,' ');
         text = text.replace(/&nbsp;/g,' ');
         input.value = text;
+
+        if(this.state.currentChat == '' || !this.state.currentExist)
+            return;
 
         if(!this.state.write && !help.isEmptyOrSpaces(input.value))
         {
@@ -441,16 +448,6 @@ class Chat extends React.Component {
         }
     }
 
-    riseEmoji() {
-        let panel = document.getElementById('emojiPanel');
-        panel.classList.remove('opacity-0');
-    }
-
-    closeEmoji() {
-        let panel = document.getElementById('emojiPanel');
-        panel.classList.add('opacity-0');
-    }
-
     mapEmoji(m) {
         let path = "/emoji/svg/" + m;
         return (
@@ -461,7 +458,7 @@ class Chat extends React.Component {
     pushEmoji(m) {
         let path = "/emoji/svg/" + m;
         let fake = document.getElementById('fake_msg');
-        fake.innerHTML += `<img class="emoji-small-text" src="${path}" ></img><div class="fake-text">::${m}</div>`;
+        fake.innerHTML += `<span class="fake-text">::${m};</span><img class="emoji-small-text" src="${path}" ></img>`;
     }
 
     render() {
@@ -502,21 +499,30 @@ class Chat extends React.Component {
                             <div 
                                 className="emoji-button" 
                                 id="emojiButton"
-                                onMouseEnter={() => {this.riseEmoji()}}
-                                onMouseLeave={() => {this.closeEmoji()}}
                             >
                                 <div className="emoji-image" ></div>
+                                <div 
+                                    id="emojiPanel" 
+                                    className="emoji-panel delay t-delay"
+                                 >
+                                    {this.state.emoji.map(m => this.mapEmoji(m))}
+                                </div>
                             </div>
-                            <div 
-                                id="emojiPanel" 
-                                className="emoji-panel opacity-0 delay t-delay"
-                                onMouseEnter={() => {this.riseEmoji()}}
-                                onMouseLeave={() => {this.closeEmoji()}}
-                            >
-                                {this.state.emoji.map(m => this.mapEmoji(m))}
-                            </div>
-                            <div onClick={((e) => {this.send()})} className="send-button" id="send">
+
+                            <div onClick={((e) => {
+                                this.textChangeMonitor({target : document.getElementById('fake_msg')});
+                                this.send();
+                                })} className="send-button" id="send">
                                 <div className="send-image"></div>
+                            </div>
+                            <div className="attach-button" id="attach">
+                                <div className="attach-image"></div>
+                                <div className="attach-panel delay t-delay">
+                                    <ul>
+                                        <li>Post</li>
+                                        <li>DickPic</li>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
                     </div>

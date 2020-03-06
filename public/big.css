@@ -1,0 +1,33 @@
+@import url('https://fonts.googleapis.com/css?family=Odibee+Sans&display=swap');
+
+body {
+    margin : 0;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+
+.delay {
+    transition: 0.2s;
+}
+
+.easy-delay {
+    transition : cubic-bezier(.21,.36,.62,1.01) 0.2s;
+}
+
+.left-offset {
+    margin-right: -40px;
+    margin-left: 40px;
+}
+
+.opacity-0 {
+    opacity: 0.0;
+}
+
+.display-none {
+    display: none !important;
+}
+
+.t-delay {
+    transition-delay: 0.1s;
+}
+

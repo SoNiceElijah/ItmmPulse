@@ -15,8 +15,6 @@ const r_filter = require('./_a_filter');
 
 const site = require('../site/site');
 
-app.set('views', __mainpath + '/site/views');
-app.set('view engine','pug');
 
 //MESURE
 let reqNum = 0;
@@ -42,13 +40,17 @@ app.use((req,res,next) => {
 
 app.use(bp.json());
 app.use(cp());
-app.use(express.static(__mainpath + '/application/public'));
+
+let USE_REACT_DEV = false;
+if(USE_REACT_DEV)
+    app.use(express.static(__mainpath + '/application/public'));
+else
+    app.use(express.static(__mainpath + '/public'));
 
 app.use(r_connection);
 
 app.use(site.public);
 app.use(r_filter);
-app.use('/application',site.private);
 
 const api = express.Router();
 

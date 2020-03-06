@@ -74,6 +74,17 @@ router.post('/updates', async (req,res) => {
                 });
             }
 
+            let newMembers = events.filter(e => e.type == 'newteammember');
+            if(newMembers.length != 0)
+            {
+                output.push({
+                    type : 'new',
+                    content : 'teamMember',
+
+                    ts : Math.max(...newMembers.map(e => e.ts))
+                })
+            }
+
             res.json(output);
         }
     };

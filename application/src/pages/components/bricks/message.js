@@ -20,6 +20,20 @@ class MessageItem extends React.Component {
 
     render() {
         let data = this.props.data;
+
+        let emoji = data.msg.match(/::(.*?);/g);
+
+        if(emoji)
+        {
+            for(let i = 0; i < emoji.length; ++i)
+            {
+                let path = '/emoji/svg/';
+                path += emoji[i].slice(2,emoji[i].length - 1);
+                data.msg = data.msg.replace(emoji[i],
+                    `<img class="emoji-small-text" src="${path}" />`);
+            }
+        } 
+
         if(this.props.me == false) {
             let className = "message-item";
             if(data.anim) 
@@ -30,7 +44,7 @@ class MessageItem extends React.Component {
                     <div style={{background : data.color}} className="message-item-avatar">{data.from.toUpperCase()[0]}</div>
                     <div className="message-item-content">
                         <div className="message-item-owner">{data.from}</div>
-                        <div className="message-item-msg">{data.msg}</div>
+                        <div className="message-item-msg" dangerouslySetInnerHTML={{__html: data.msg}}></div>
                         <div className="message-item-date">{help.time(data.date)}</div>
                     </div>
                 </div>
@@ -48,7 +62,7 @@ class MessageItem extends React.Component {
                     </div>
                     <div className="message-item-content">
                         <div className="message-item-owner">{data.from}</div>
-                        <div className="message-item-msg">{data.msg}</div>
+                        <div className="message-item-msg" dangerouslySetInnerHTML={{__html: data.msg}}></div>
                         <div className="message-item-date">{help.time(data.date)}</div>
                     </div>
                 </div>

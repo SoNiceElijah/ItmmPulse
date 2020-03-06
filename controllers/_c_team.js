@@ -2,6 +2,8 @@ const $ = require('../mappers/index');
 const $v = require('../ulils/dataChecker');
 const $m = require('../models/index');
 
+const event = require('./_c_event');
+
 module.exports = {
     new : async (ctx) => {
         let team = $v($m.team,ctx);
@@ -122,6 +124,14 @@ module.exports = {
         let cmembs = chat.members;
         cmembs.push(uid);
         $.chat.updateMembers(team.main,cmembs);
+
+        for(let i = 0; i < tmembs.length; ++i)
+        {
+            event.push({
+                type : 'newteammember',
+                uid : tmembs[i]
+            })
+        }
 
         return true;
     }
