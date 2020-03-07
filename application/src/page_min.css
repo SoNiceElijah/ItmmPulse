@@ -1,17 +1,23 @@
-@media (min-width : 700px) {
+
+@media (max-width : 700px) {
 
 .left-panel {
     background: #272729;
-    width: 60px;
-    height: 100%;
+    width: 100%;
     box-shadow: 1px 0 5px 0px rgba(0, 0, 0, 0.1);
 
-    float: left;
+    height: 55px;
+    position: absolute;
+    bottom: 0;
+
+    z-index: 2;
+
+    overflow: hidden;
 }
 
 .top-panel {
 
-    width: calc(100% - 61px);
+    width: 100%;
     height: 60px;
     box-shadow: 0 1px 5px 0px rgba(0, 0, 0, 0.1);
 
@@ -19,10 +25,7 @@
     float: right;
 
     position: relative;
-}
-
-.page-name {
-   display: none;
+    z-index: 2;
 }
 
 .main-button {
@@ -42,16 +45,27 @@
     height: 25px;
 }
 
+.left-panel-top {
+    display: inline-block;
+    width: 80%;
+
+    overflow: hidden;
+
+    vertical-align: bottom;
+}
+
 .mbutton {
-    display: flex;
+    display: inline-flex;
     justify-content: center;
     align-items: center;
 
-    width: 60px;
-    height: 60px;
+    width: 25%;
+    height: 55px;
 
     cursor: pointer;
     user-select: none;
+
+    vertical-align: middle;
 }
 
 .mbutton:hover {
@@ -63,9 +77,13 @@
 }
 
 .left-panel-bottom {
-    position: absolute;
-    bottom: 0;
-    left: 0;
+    display: inline-block;
+    width: 20%;
+    vertical-align: middle;
+}
+
+.left-panel-bottom #logout {
+    width: 100%;
 }
 
 .mbutton[selected] {
@@ -132,7 +150,7 @@
 }
 
 .alert-buttons .button {
-    width: 120px;
+    width: 90px;
     margin-top: 15px;
 }
 
@@ -162,13 +180,21 @@
 .central-panel {
     position: fixed;
     top : 60px;
-    left: 60px;
+    bottom: 55px;
 
-    width: calc(100% - 60px);
-    height: calc(100% - 60px);
+    width: 100%;
+    height: calc(100% - 115px);
 
     opacity: 1.0;
+    z-index: 8;
 
+}
+
+.page-name {
+    font-size: 20px;
+    padding: 18px;
+
+    font-weight: 600;
 }
 
 .flex-center {
@@ -187,8 +213,8 @@
     margin: auto;
     margin-bottom: 20px;
 
-    width: 150px;
-    height: 150px;
+    width: 100px;
+    height: 100px;
 
     background-image: url('/emoji/svg/015-grinning.svg');
     background-size: cover;
@@ -197,6 +223,9 @@
 
 .excuse-msg {
     text-align: center;
+    width: 200px;
+
+    margin: auto;
 }
 
 .central-panel-offset {
@@ -235,7 +264,6 @@
     display: none;
 }
 
+
 }
-
-
 

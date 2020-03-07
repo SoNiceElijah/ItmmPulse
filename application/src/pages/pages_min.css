@@ -1,15 +1,13 @@
+@media (max-width : 700px) {
 
-@media (min-width : 700px) {
 /* CHAT */
 
 @import url('https://fonts.googleapis.com/css?family=Ubuntu&display=swap');
 
 .chat-panel{
     background: #222224;
-    width: 210px;
+    width: 100%;
     height: 100%;
-
-    padding: 0 20px 0 20px;
     box-shadow: 1px 0 5px 0px rgba(0, 0, 0, 0.1);
 
 
@@ -19,37 +17,29 @@
     overflow-y: scroll;
 }
 
-.chat-list {
-    padding: 20px 0 10px 0;
-
-}
-
-.member-list {
-    padding: 10px 0 20px 0;
-}
-
 .chat-list-title, .member-list-title {
-    font-weight: 600;
+
+    display: none;
+
+    font-weight: 300;
     font-size: 20px;
     padding-bottom: 5px;
-    border-bottom: 1px solid #525252;
 
-}
-
-.chat-list-items, .member-list-items {
-    padding: 10px 0 10px 0;
 }
 
 .chat-list-item, .member-list-item {
-    padding: 5px 10px 7px 10px;
-    border-radius: 8px;
-    margin-top: 5px;
+    padding: 5px 20px 7px 20px;
     cursor: pointer;
+
+    height: 60px;
+    line-height: 60px;
 
     overflow: hidden;
     text-overflow: ellipsis;
 
     position: relative;
+
+    border-bottom: 1px solid #292929;
 }
 
 .relative {
@@ -59,7 +49,7 @@
 .chat-list-item span, .member-list-item span {
 
     display: inline-block;
-    height: 20px;
+    font-size: 16px;
 
     vertical-align: middle;
 
@@ -69,17 +59,23 @@
 }
 
 .chat-list-item:hover, .member-list-item:hover {
-    background: #2d2d35;
+    background: #1a1a1b;
 }
 
 .member-list-item strong, .chat-list-item strong {
     font-family: 'Ubuntu', sans-serif;
-    font-weight: 300;
+    font-weight: 600;
     
+    font-size: 18px;
+
     display: inline-block;
     margin-right: 5px;
 
     vertical-align: middle;
+}
+
+.member-list-item[title] {
+    display: none;
 }
 
 .member-list-item strong {
@@ -108,9 +104,17 @@ div[me]:hover {
 }
 
 .right-box {
+    position: fixed !important;
+    z-index: -5;
     float: right;
-    width: calc(100% - 251px);
-    height: 100%;;
+    width: 100%;
+    height: 100%;
+
+    top: 0;
+    bottom: 0;
+
+    background: #202020;
+
 }
 
 .send-panel {
@@ -379,7 +383,7 @@ div[me]:hover {
 
 .message-item-content {
     display: inline-block;
-    max-width: 300px;
+    max-width: 200px;
     margin-left: 10px;
     padding: 15px;
     border-radius: 8px;
@@ -433,7 +437,7 @@ div[me]:hover {
 }
 
 .member-list-item[selected], .chat-list-item[selected] {
-    background: #27272e;
+    background: #202020;
 }
 
 .msg-me .message-item-content, .me-avatar-fix {
@@ -457,18 +461,18 @@ div[me]:hover {
 }
 
 .new-message-alert {
-    right: 6px;
-    top : 6px;
+    right: 20px;
+    top : 22px;
 
-    font-size: 14px;
-    line-height: 20px;
+    font-size: 18px;
+    line-height: 30px;
     border-radius: 4px;
     text-align: center;
-    min-width: 10px;
+    min-width: 20px;
     padding: 0 5px 0 5px;
 
-    color: #b12722;
-    border: 1px solid #b12722;
+    color: #dadada;
+    background: #3f91aa;
 
     position: absolute;
 
@@ -493,7 +497,7 @@ div[me]:hover {
 
 .chat-panel-loader {
     background: #222224;
-    width: 250px;
+    width: 100%;
     height: 100%;
 
     display: flex;

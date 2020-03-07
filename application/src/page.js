@@ -6,6 +6,7 @@ import InProgress from './pages/progress';
 import Chat from './pages/chat';
 
 import './page.css';
+import './page_min.css';
 
 const axios = require('axios');
 const help = require('./utils/help');
@@ -16,13 +17,20 @@ class Page extends React.Component {
 
         this.state = {}
         this.state.currentPage = null;
-        this.state.currentButton = '';        
+        this.state.currentButton = '';
+        this.state.pageName = '';
 
         this.pages = {};
         this.pages['mp'] = <InProgress />; 
         this.pages['np'] = <InProgress />;
         this.pages['tp'] = <InProgress />;
         this.pages['cp'] = <Chat />;
+
+        this.pagesName = {};
+        this.pagesName['mp'] = 'Main'; 
+        this.pagesName['np'] = 'News';
+        this.pagesName['tp'] = 'Time table';
+        this.pagesName['cp'] = 'Chat';
 
         this.hideAlert = this.hideAlert.bind(this);
 
@@ -74,7 +82,8 @@ class Page extends React.Component {
 
         
         this.setState({
-            currentPage : this.pages[pageId]
+            currentPage : this.pages[pageId],
+            pageName : this.pagesName[pageId]
         })
 
         setTimeout(() => {
@@ -104,7 +113,9 @@ class Page extends React.Component {
             <Overlay ref={this.overlay} />
             <div className="back"></div>
             <div className="main">
-                <div className="top-panel"></div>
+                <div className="top-panel">
+                    <div className="page-name">{this.state.pageName}</div>
+                </div>
                 <div className="left-panel">
                     <div className="left-panel-top">
                         <div className="mbutton" id="mp" onClick={(e) => {this.menuButtonClicked(e)}} selected="selected">

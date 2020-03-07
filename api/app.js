@@ -41,7 +41,7 @@ app.use((req,res,next) => {
 app.use(bp.json());
 app.use(cp());
 
-let USE_REACT_DEV = false;
+let USE_REACT_DEV = true;
 if(USE_REACT_DEV)
     app.use(express.static(__mainpath + '/application/public'));
 else

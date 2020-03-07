@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom';
 import MessagePanel from './components/messagepanel';  
 
 import './pages.css';
+import './pages_min.css';
 
 const axios = require('axios');
 const help = require('../utils/help');
@@ -66,7 +67,39 @@ class Chat extends React.Component {
         return chat;
     }
 
+    sendInputRemap() {
+
+        let big = document.getElementById('superInputContainer');
+        let container = document.getElementById('inputContainer');
+        let elem = document.getElementById('fake_msg');
+
+        container.style.height = elem.clientHeight + 5 + 'px';
+        big.style.height = elem.clientHeight + 60 + 'px';
+
+        let panel = document.getElementById('messagePanel');
+        let superPanel = document.getElementById('rightBox');
+        let scrollPanel = document.getElementById('messagePanel2');
+
+        if(scrollPanel)
+        {
+           
+            let scrollDif = scrollPanel.clientHeight;
+            panel.style.height = (superPanel.clientHeight - big.clientHeight) + 'px';
+            scrollPanel.scrollTop += scrollDif - scrollPanel.clientHeight;
+        }
+        else
+        {
+            panel.style.height = (superPanel.clientHeight - big.clientHeight) + 'px';
+        }
+
+
+
+
+    }
+
     componentDidMount(newLongPoll = true) {
+
+        this.sendInputRemap();
 
         axios.post('/api/message/emoji')
             .then((e) => {
@@ -135,6 +168,9 @@ class Chat extends React.Component {
         if(this.state.currentChat == id)
             return;
 
+        let panel = document.getElementById('rightBox');
+        panel.style.zIndex = 5;
+
         let notifyDiv = document.getElementById('cidal' + id);
 
         if(notifyDiv.innerHTML != '0') {          
@@ -180,8 +216,8 @@ class Chat extends React.Component {
         data.cid = this.state.currentChat;
         data.random = Math.floor(Math.random() * 1000);
 
-        msgBox.value = '';
         fakeBox.innerHTML = '';
+        this.textChangeMonitor({ target : fakeBox});
 
         if(!this.state.currentExist)
         {
@@ -383,13 +419,15 @@ class Chat extends React.Component {
     }
 
     textChangeMonitor(e) {
-            
+
         let input = document.getElementById('msg');
 
         let text = e.target.innerText;
         text = text.replace(/<br>/gi,' ');
         text = text.replace(/&nbsp;/g,' ');
         input.value = text;
+
+        this.sendInputRemap();
 
         if(this.state.currentChat == '' || !this.state.currentExist)
             return;
@@ -419,6 +457,7 @@ class Chat extends React.Component {
         if(this.state.currentChat == '' || !this.state.currentExist)
             return;
 
+        this.sendInputRemap();
         let input = document.getElementById('msg');
 
         if(!help.isEmptyOrSpaces(input.value))
@@ -437,6 +476,7 @@ class Chat extends React.Component {
         if(this.state.currentChat == '' || !this.state.currentExist)
             return;
 
+        this.sendInputRemap();
         if(this.state.write)
         {
             console.log('StopWrite');
@@ -458,7 +498,9 @@ class Chat extends React.Component {
     pushEmoji(m) {
         let path = "/emoji/svg/" + m;
         let fake = document.getElementById('fake_msg');
-        fake.innerHTML += `<span class="fake-text">::${m};</span><img class="emoji-small-text" src="${path}" ></img>`;
+        fake.innerHTML += `<div contenteditable="false" class="sensetive"><span class="fake-text">::${m};</span><img class="emoji-small-text" src="${path}" ></img></div>&nbsp;`;
+
+        this.textChangeMonitor({target : document.getElementById('fake_msg')});
     }
 
     render() {
@@ -468,13 +510,13 @@ class Chat extends React.Component {
                     <div className="loader"></div>
                 </div>
                 {this.chatPanel()}
-                <div className="right-box relative">
+                <div className="right-box relative" id="rightBox">
                     <div className="message-panel-big" id="messagePanel">
                         <MessagePanel newMsg={this.state.msgs} me={this.state.me} findUser={this.findUserByid} id={this.state.currentChat} exists={this.state.currentExist}/>
                         <div id="writers" className="message-panel-writers delay opacity-0"><b>{this.state.writers}</b> набирает сообщение... </div>
                     </div>
-                    <div className="send-panel">
-                        <div className="send-input relative">
+                    <div className="send-panel" id="superInputContainer">
+                        <div className="send-input relative" id="inputContainer">
                             <input 
                                 id="msg" 
                                 type="text" 
