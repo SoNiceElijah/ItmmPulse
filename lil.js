@@ -17,7 +17,7 @@ router.post('/updatePulse', (req,res) => {
         `,(err,data) => {
             if(!err)
             {
-                res.send(data);
+                res.send("Updated:\n" + data);
             }
             else
             {
