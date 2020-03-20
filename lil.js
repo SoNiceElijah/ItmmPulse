@@ -25,5 +25,5 @@ router.post('/updatePulse', (req,res) => {
 
 })
 
-//Is new alarm system working?
+//Check new rule
 module.exports = router;
