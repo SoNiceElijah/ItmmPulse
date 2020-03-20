@@ -1,13 +1,13 @@
 //Hi! I'm simple deploy bot
 
 const express = require('express');
-const route = express.Router();
+const router = express.Router();
 
-route.post('/updatePulse', (req,res) => {
+router.post('/updatePulse', (req,res) => {
     
     console.log(req.body);
     res.sendStatus(200);
-    
+
 })
 
-module.exports = route;
+module.exports = router;
