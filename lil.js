@@ -9,22 +9,14 @@ router.post('/updatePulse', (req,res) => {
 
     if(req.body.ref === 'refs/heads/master')
     {
-        cmd.get(`
+        cmd.run(`
             git fetch --all
             git reset --hard origin/master
             npm i
             pm2 reload server
-        `,(err,data) => {
-            if(!err)
-            {
-                res.send("Updated:\n" + data);
-            }
-            else
-            {
-                res.sendStatus(500);
-            }
+        `);
 
-        })
+        res.send("Updating...");
     }
     else
     {
