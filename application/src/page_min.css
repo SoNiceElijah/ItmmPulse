@@ -10,7 +10,7 @@
     position: absolute;
     bottom: 0;
 
-    z-index: 2;
+    z-index: 5;
 
     overflow: hidden;
 }
@@ -18,14 +18,14 @@
 .top-panel {
 
     width: 100%;
-    height: 60px;
+    height: 70px;
     box-shadow: 0 1px 5px 0px rgba(0, 0, 0, 0.1);
 
     background: #272729;
     float: right;
 
     position: relative;
-    z-index: 2;
+    z-index: 5;
 }
 
 .main-button {
@@ -177,22 +177,25 @@
     height: 100%;
 }
 
+.collapsed {
+    display: none;
+}
+
 .central-panel {
     position: fixed;
-    top : 60px;
+    top : 70px;
     bottom: 55px;
 
     width: 100%;
     height: calc(100% - 115px);
 
     opacity: 1.0;
-    z-index: 8;
 
 }
 
 .page-name {
     font-size: 20px;
-    padding: 18px;
+    padding: 21px;
 
     font-weight: 600;
 }

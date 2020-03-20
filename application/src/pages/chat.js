@@ -80,16 +80,18 @@ class Chat extends React.Component {
         let superPanel = document.getElementById('rightBox');
         let scrollPanel = document.getElementById('messagePanel2');
 
+        let adjust = document.getElementById('adjust');
+
         if(scrollPanel)
         {
            
             let scrollDif = scrollPanel.clientHeight;
-            panel.style.height = (superPanel.clientHeight - big.clientHeight) + 'px';
+            panel.style.height = (superPanel.clientHeight - big.clientHeight - adjust.clientHeight) + 'px';
             scrollPanel.scrollTop += scrollDif - scrollPanel.clientHeight;
         }
         else
         {
-            panel.style.height = (superPanel.clientHeight - big.clientHeight) + 'px';
+            panel.style.height = (superPanel.clientHeight - big.clientHeight - adjust.clientHeight) + 'px';
         }
 
 
@@ -168,8 +170,10 @@ class Chat extends React.Component {
         if(this.state.currentChat == id)
             return;
 
-        let panel = document.getElementById('rightBox');
-        panel.style.zIndex = 5;
+        let panel = document.getElementById('leftBigPanel');
+        panel.classList.add('collapsed');
+        panel = document.getElementById('rightBox');
+        panel.style.zIndex = 8;
 
         let notifyDiv = document.getElementById('cidal' + id);
 
@@ -190,6 +194,8 @@ class Chat extends React.Component {
             currentChat : id,
             currentExist : exist
         });
+
+        this.props.topBar("Назад? Не сегодня, сори");
 
 
     }
@@ -514,6 +520,7 @@ class Chat extends React.Component {
                     <div className="message-panel-big" id="messagePanel">
                         <MessagePanel newMsg={this.state.msgs} me={this.state.me} findUser={this.findUserByid} id={this.state.currentChat} exists={this.state.currentExist}/>
                         <div id="writers" className="message-panel-writers delay opacity-0"><b>{this.state.writers}</b> набирает сообщение... </div>
+                        <div id="adjust" className="msg-j" />
                     </div>
                     <div className="send-panel" id="superInputContainer">
                         <div className="send-input relative" id="inputContainer">

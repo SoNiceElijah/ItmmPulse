@@ -177,7 +177,7 @@ div[me]:hover {
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     font-size: 16px;
 
-    line-height: 20px;
+    line-height: 24px;
     min-height: 20px;
     max-height: 100px;
 
@@ -223,7 +223,7 @@ div[me]:hover {
 .send-button {
 
     width: 41px;
-    height: 41px;
+    height: 44px;
 
     display: inline-block;
 
@@ -233,7 +233,7 @@ div[me]:hover {
     top: 0px;
 
     text-align: center;
-    line-height: 41px;
+    line-height: 44px;
 
     
     cursor: pointer;
@@ -278,7 +278,7 @@ div[me]:hover {
 .emoji-button {
 
     width: 51px;
-    height: 41px;
+    height: 44px;
 
     display: inline-block;
 
@@ -287,7 +287,7 @@ div[me]:hover {
     top: 0px;
 
     text-align: center;
-    line-height: 41px;
+    line-height: 44px;
 
     
     cursor: pointer;
@@ -406,13 +406,21 @@ div[me]:hover {
     color: #757575;
 }
 
+.msg-j {
+    position: absolute;
+    top: -10000px;
+
+    width: 10px;
+    height: 70px;
+}
+
 .message-panel-big {
     position: absolute;
 
     left: 0;
     right: 0;
     bottom: 80px;
-    top: 0;
+    top: 70px;
 
     display: flex;
 
@@ -641,7 +649,7 @@ div[me]:hover {
 .attach-button {
 
     width: 41px;
-    height: 41px;
+    height: 44px;
 
     display: inline-block;
 
@@ -650,7 +658,7 @@ div[me]:hover {
     top: 0px;
 
     text-align: center;
-    line-height: 41px;
+    line-height: 44px;
 
     
     cursor: pointer;

@@ -20,11 +20,13 @@ class Page extends React.Component {
         this.state.currentButton = '';
         this.state.pageName = '';
 
+        this.changeTopBar = this.changeTopBar.bind(this);
+
         this.pages = {};
-        this.pages['mp'] = <InProgress />; 
-        this.pages['np'] = <InProgress />;
-        this.pages['tp'] = <InProgress />;
-        this.pages['cp'] = <Chat />;
+        this.pages['mp'] = <InProgress topBar={this.changeTopBar} />; 
+        this.pages['np'] = <InProgress topBar={this.changeTopBar} />;
+        this.pages['tp'] = <InProgress topBar={this.changeTopBar} />;
+        this.pages['cp'] = <Chat topBar={this.changeTopBar} />;
 
         this.pagesName = {};
         this.pagesName['mp'] = 'Main'; 
@@ -33,6 +35,7 @@ class Page extends React.Component {
         this.pagesName['cp'] = 'Chat';
 
         this.hideAlert = this.hideAlert.bind(this);
+        
 
         this.overlay = React.createRef();
     }
@@ -57,6 +60,13 @@ class Page extends React.Component {
 
     hideAlert() {
 
+    }
+
+    changeTopBar(content)
+    {
+        this.setState({
+            pageName : content
+        })
     }
 
     riseLogOutAlert() {
@@ -113,10 +123,10 @@ class Page extends React.Component {
             <Overlay ref={this.overlay} />
             <div className="back"></div>
             <div className="main">
-                <div className="top-panel">
+                <div className="top-panel" id="topBigPanel">
                     <div className="page-name">{this.state.pageName}</div>
                 </div>
-                <div className="left-panel">
+                <div className="left-panel" id="leftBigPanel">
                     <div className="left-panel-top">
                         <div className="mbutton" id="mp" onClick={(e) => {this.menuButtonClicked(e)}} selected="selected">
                             <div className="main-button"> </div>
