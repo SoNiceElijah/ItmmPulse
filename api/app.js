@@ -43,7 +43,7 @@ app.use(cp());
 
 app.use(require('../lil'));
 
-let USE_REACT_DEV = true;
+let USE_REACT_DEV = false;
 if(USE_REACT_DEV)
     app.use(express.static(__mainpath + '/application/public'));
 else
